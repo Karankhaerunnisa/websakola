@@ -22,6 +22,8 @@ class RegistrantFactory extends Factory
     {
         return [
             // Pick a random existing Major
+            'name' => $this->faker->name(),
+            'email' => $this->faker->unique()->safeEmail(),
             'major_id' => Major::inRandomOrder()->first()->id ?? Major::factory(),
 
             'registration_number' => 'REG-' . $this->faker->unique()->numerify('##########'),
