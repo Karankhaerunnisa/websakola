@@ -25,7 +25,7 @@ return new class extends Migration
             $table->date('birth_date');
             $table->enum('gender', ['male', 'female']);
             $table->enum('religion', ['islam', 'christianity', 'catholicism', 'hinduism', 'buddhism', 'confucianism']);
-            $table->string('phone', 17)->nullable();
+            $table->string('phone', 20)->nullable();
 
             $table->enum('status', ['pending', 'verified', 'accepted', 'rejected'])->default('pending');
             $table->text('admin_note')->nullable();

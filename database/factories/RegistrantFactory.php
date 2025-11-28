@@ -33,6 +33,7 @@ class RegistrantFactory extends Factory
             'birth_date' => $this->faker->date('Y-m-d', '-15 years'), // Approx high school age
             'gender' => $this->faker->randomElement(Gender::cases()),
             'religion' => $this->faker->randomElement(Religion::cases()),
+            'phone' => $this->faker->phoneNumber(),
             'status' => $this->faker->randomElement(RegistrantStatus::cases()),
         ];
     }

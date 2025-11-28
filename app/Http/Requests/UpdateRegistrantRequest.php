@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\RegistrantStatus;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateRegistrantRequest extends FormRequest
 {
@@ -11,7 +13,7 @@ class UpdateRegistrantRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +24,8 @@ class UpdateRegistrantRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'status' => ['required', Rule::enum(RegistrantStatus::class)],
+            'admin_note' => ['nullable', 'string']
         ];
     }
 }

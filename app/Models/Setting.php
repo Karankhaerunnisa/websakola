@@ -12,7 +12,7 @@ class Setting extends Model
 
     protected $guarded = ['id'];
 
-    public function getValue(string $key, $default = null) {
+    public static function getValue(string $key, $default = null) {
         $setting = self::where('key', $key)->first();
 
         if ($setting) {

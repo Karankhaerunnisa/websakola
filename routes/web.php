@@ -19,10 +19,14 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/admin/dashboard', [DashboardController::class, 'index'])
-    // ->middleware(['auth', 'admin'])
-    ->name('admin.dashboard');
-Route::get('/admin/registrants', [RegistrantController::class, 'index'])->name('admin.registrants.index');
-Route::get('/admin/registrants/{registrants:registration_number}', [RegistrantController::class, 'index'])->name('admin.registrants.show');
+Route::prefix('admin')->name('admin.')->group(function() {
+    Route::get('/dashboard', [DashboardController::class, 'index'])
+        // ->middleware(['auth', 'admin'])
+        ->name('dashboard');
+
+    Route::get('/registrants/export', [RegistrantController::class, 'export'])->name('registrants.export');
+    Route::apiResource('/registrants', RegistrantController::class);
+    Route::get('/registrants/{registrant}/print', [RegistrantController::class, 'print'])->name('registrants.print');
+});
 
 require __DIR__.'/auth.php';

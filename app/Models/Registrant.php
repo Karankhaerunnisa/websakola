@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enums\Gender;
 use App\Enums\RegistrantStatus;
 use App\Enums\Religion;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +27,23 @@ class Registrant extends Model
             'religion' => Religion::class,
             'status' => RegistrantStatus::class,
         ];
+    }
+
+    protected function whatsappUrl(): Attribute
+    {
+        return Attribute::make(
+            get: function(mixed $value, array $attributes): ?string {
+                $phone = $attributes['phone'] ?? null;
+
+                if (!$phone) {
+                    return null;
+                }
+
+                $sanitized = preg_replace('/^0/', '62', preg_replace('/\D/', '', $phone));
+
+                return "https://wa.me/{$sanitized}";
+            }
+        );
     }
 
     public function getRouteKeyName(): string
