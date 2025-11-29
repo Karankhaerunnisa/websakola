@@ -128,25 +128,37 @@
             text-align: center;
             vertical-align: middle;
         }
+
+        .kop-image {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-bottom: 2px double black;
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 
 <body>
+    @if($kop = \App\Models\Setting::getValue('kop_surat'))
+    <img src="{{ public_path('images/' . $kop) }}" class="kop-image" alt="Kop Surat">
+    @else
     <table class="header-table">
         <tr>
             <td class="logo-cell">
-                <img src="{{ public_path('images/school-logo.jpg') }}" class="logo-image" alt="Logo">
+                <img src="{{ public_path('images/' . \App\Models\Setting::getValue('app_logo', 'default.png')) }}"
+                    class="logo-image" alt="Logo">
             </td>
             <td class="text-cell header">
-                <h1>SMK ROHMATUL UMMAH</h1>
-                <h2>PANITIA SISTEM PENERIMAAN MURID BARU (SPMB)</h2>
-                <p>Kampung Baladil Amin, Pulutan, Jekulo, Kec. Mejobo</p>
-                <p>Kabupaten Kudus, Jawa Tengah</p>
-                <p>Telp: {{ \App\Models\Setting::getValue('school_phone', '+62 821-2723-7451') }} | Email:
-                    {{ \App\Models\Setting::getValue('school_email', 'info@smkrohmatulummah.sch.id') }}</p>
+                <h1>{{ \App\Models\Setting::getValue('school_name', 'SMK DEFAULT') }}</h1>
+                <h2>PANITIA PENERIMAAN PESERTA DIDIK BARU (PPDB)</h2>
+                <p>{{ \App\Models\Setting::getValue('school_address') }}</p>
+                <p>Telp: {{ \App\Models\Setting::getValue('school_phone') }} | Email: {{
+                    \App\Models\Setting::getValue('school_email') }}</p>
             </td>
         </tr>
     </table>
+    @endif
 
     <div class="title">BUKTI PENDAFTARAN PESERTA DIDIK BARU</div>
     <div class="number">Nomor: {{ $registrant->registration_number }}/SPMB/{{ now()->year }}</div>
@@ -174,7 +186,7 @@
             <td class="label">Tempat, Tanggal Lahir</td>
             <td class="separator">:</td>
             <td class="value uppercase">{{ $registrant->birth_place }}, {{ $registrant->birth_date
-            ->translatedFormat('d F Y') }}</td>
+                ->translatedFormat('d F Y') }}</td>
         </tr>
         <tr>
             <td class="label">Jenis Kelamin</td>

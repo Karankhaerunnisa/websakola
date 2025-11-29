@@ -11,7 +11,15 @@ class UpdateSettingRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
+    }
+
+    protected function prepareForValidation()
+    {
+        return $this->merge([
+            // harus '0'/'1' karena kolom di db bertipe string
+            'is_registration_open' => $this->has('is_registration_open') ? '1' : '0'
+        ]);
     }
 
     /**
@@ -22,7 +30,19 @@ class UpdateSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'school_name' => ['required', 'string', 'max:100'],
+            'school_address' => ['required', 'string'],
+            'school_phone' => ['required', 'string'],
+            'school_email' => ['required', 'email'],
+
+            'academic_year' => ['required', 'string'],
+            'registration_start_date' => ['required', 'date'],
+            'registration_end_date' => ['required', 'date', 'after:registration_start_date'],
+            'is_registration_open' => ['boolean'],
+
+            // Logo validation (Optional, max 2MB)
+            'app_logo' => ['nullable', 'image', 'max:2048'],
+            'document_header' => ['nullable', 'image', 'max:2048'],
         ];
     }
 }

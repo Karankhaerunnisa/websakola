@@ -60,7 +60,13 @@ class SettingSeeder extends Seeder
             // Assets
             [
                 'key' => 'app_logo',
-                'value' => 'default_logo.png',
+                'value' => 'school-logo.jpg',
+                'type' => 'string'
+            ],
+
+            [
+                'key' => 'document_header',
+                'value' => 'letter-head.png',
                 'type' => 'string'
             ],
         ];
