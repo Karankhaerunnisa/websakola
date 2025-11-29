@@ -74,10 +74,26 @@
         <h2 class="text-2xl font-bold text-center mb-8 text-gray-900">Pengumuman Terbaru</h2>
         <div class="grid gap-6 md:grid-cols-3">
             @foreach($announcements as $news)
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-l-4 border-l-blue-500">
-                <div class="text-xs text-gray-500 mb-2">{{ $news->published_at->format('d M Y') }}</div>
-                <h3 class="font-bold text-lg mb-2">{{ $news->title }}</h3>
-                <p class="text-gray-600 text-sm line-clamp-3">{{ $news->content }}</p>
+            <div class="bg-white p-6 rounded-lg shadow-sm border border-l-4 border-l-blue-500 flex flex-col h-full">
+                <div class="text-xs text-gray-500 mb-2 flex items-center">
+                    <x-heroicon-o-calendar class="w-3 h-3 mr-1" />
+                    {{ $news->published_at->format('d M Y') }}
+                </div>
+
+                <h3 class="font-bold text-lg mb-2">
+                    <a href="{{ route('announcement.show', $news->id) }}" class="hover:text-blue-600 transition">
+                        {{ $news->title }}
+                    </a>
+                </h3>
+                <p class="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow">
+                    {{ $news->content }}
+                </p>
+                <div class="mt-auto pt-2">
+                    <a href="{{ route('announcement.show', $news->id) }}" class="text-sm font-semibold text-blue-600 hover:text-blue-800 inline-flex items-center transition">
+                        Baca Selengkapnya
+                        <x-heroicon-o-arrow-long-right class="w-4 h-4 ml-1" />
+                    </a>
+                </div>
             </div>
             @endforeach
         </div>

@@ -19,4 +19,13 @@ class HomeController extends Controller
 
         return view('welcome', compact('isOpen', 'announcements', 'majors'));
     }
+
+    public function showAnnouncement(Announcement $announcement)
+    {
+        if (! $announcement->is_active) {
+            abort(404);
+        }
+
+        return view('announcement-show', compact('announcement'));
+    }
 }
