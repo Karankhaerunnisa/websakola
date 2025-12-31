@@ -26,6 +26,7 @@ class StoreMajorRequest extends FormRequest
             'name' => ['required', 'string', 'max:100'],
             'quota' => ['required', 'integer', 'min:0'],
             'description' => ['nullable', 'string'],
+            'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:512'],
         ];
     }
 }

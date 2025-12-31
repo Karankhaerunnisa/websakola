@@ -24,6 +24,7 @@ class StoreFrontRegistrationRequest extends FormRequest
     {
         return [
             'major_id' => ['required', 'exists:majors,id'],
+            'registration_path' => ['required', 'in:umum,prestasi'],
 
             // Personal
             'name' => ['required', 'string', 'max:100'],
@@ -63,6 +64,14 @@ class StoreFrontRegistrationRequest extends FormRequest
             'pekerjaan_ibu' => ['nullable', 'string'],
             'penghasilan_ibu' => ['nullable', 'string'],
             'no_hp_ibu' => ['nullable', 'string'],
+
+            // Documents (PDF uploads)
+            'dokumen_kk' => ['nullable', 'file', 'mimes:pdf', 'max:1048'],
+            'dokumen_akta' => ['nullable', 'file', 'mimes:pdf', 'max:1048'],
+            'dokumen_foto' => ['nullable', 'file', 'mimes:pdf,jpg,jpeg,png', 'max:2048'],
+            'dokumen_ijazah' => ['nullable', 'file', 'mimes:pdf', 'max:1048'],
+            'dokumen_suratdokter' => ['nullable', 'file', 'mimes:pdf', 'max:1048'],
+            'sertifikat_prestasi' => ['nullable', 'file', 'mimes:pdf', 'max:2048', 'required_if:registration_path,prestasi'],
         ];
     }
 
@@ -72,9 +81,11 @@ class StoreFrontRegistrationRequest extends FormRequest
     public function messages(): array
     {
         return [
-            // Jurusan
+            // Jurusan & Jalur
             'major_id.required' => 'Silakan pilih jurusan yang diinginkan.',
             'major_id.exists'   => 'Jurusan yang dipilih tidak tersedia.',
+            'registration_path.required' => 'Silakan pilih jalur pendaftaran.',
+            'registration_path.in' => 'Jalur pendaftaran tidak valid.',
 
             // Data Pribadi
             'name.required'       => 'Nama lengkap wajib diisi.',
@@ -124,6 +135,20 @@ class StoreFrontRegistrationRequest extends FormRequest
             // Data Orang Tua
             'nama_ayah.required' => 'Nama ayah kandung wajib diisi.',
             'nama_ibu.required'  => 'Nama ibu kandung wajib diisi.',
+
+            // Dokumen Upload
+            'dokumen_kk.mimes' => 'Dokumen KK harus berformat PDF.',
+            'dokumen_kk.max' => 'Ukuran dokumen KK maksimal 1MB.',
+            'dokumen_akta.mimes' => 'Dokumen Akta Kelahiran harus berformat PDF.',
+            'dokumen_akta.max' => 'Ukuran dokumen Akta maksimal 1MB.',
+            'dokumen_foto.mimes' => 'Pas Foto harus berformat PDF, JPG, JPEG, atau PNG.',
+            'dokumen_foto.max' => 'Ukuran Pas Foto maksimal 2MB.',
+            'dokumen_ijazah.mimes' => 'Dokumen Ijazah/SKL harus berformat PDF.',
+            'dokumen_ijazah.max' => 'Ukuran dokumen Ijazah/SKL maksimal 1MB.',
+            'dokumen_suratdokter.max' => 'Ukuran Surat Keterangan Sehat Dari Dokter maksimal 1MB.',
+            'sertifikat_prestasi.required_if' => 'Sertifikat/Piagam Prestasi wajib diupload untuk Jalur Prestasi.',
+            'sertifikat_prestasi.mimes' => 'Sertifikat/Piagam harus berformat PDF.',
+            'sertifikat_prestasi.max' => 'Ukuran Sertifikat/Piagam maksimal 2MB.',
         ];
     }
 }

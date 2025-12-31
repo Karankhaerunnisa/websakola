@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Cek Status Pendaftaran - {{ \App\Models\Setting::getValue('school_name') }}</title>
+    <title>Cek Status - {{ \App\Models\Setting::getValue('school_name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
@@ -26,17 +26,21 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="{{ route('home') }}"
                         class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
                         <x-heroicon-o-home class="w-4 h-4 mr-1" />
                         Beranda
                     </a>
-                    <a href="{{ route('login') }}"
+                    <a href="{{ route('ujian-tes') }}"
                         class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
-                        <x-heroicon-o-lock-closed class="w-4 h-4 mr-1" />
-                        Admin Login
+                        <x-heroicon-o-document-text class="w-4 h-4 mr-1" />
+                        Tes Minat & Bakat
+                    </a>
+                    <a href="{{ route('pengumuman-seleksi') }}"
+                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
+                        <x-heroicon-o-academic-cap class="w-4 h-4 mr-1" />
+                        Pengumuman Seleksi
                     </a>
                 </div>
 
@@ -64,66 +68,325 @@
                         Beranda
                     </div>
                 </a>
-
-                <a href="{{ route('login') }}"
+                <a href="{{ route('ujian-tes') }}"
                     class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
                     <div class="flex items-center">
-                        <x-heroicon-o-lock-closed class="w-5 h-5 mr-2" />
-                        Admin Login
+                        <x-heroicon-o-document-text class="w-5 h-5 mr-2" />
+                        Tes Minat & Bakat
+                    </div>
+                </a>
+                <a href="{{ route('pengumuman-seleksi') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-academic-cap class="w-5 h-5 mr-2" />
+                        Pengumuman Seleksi
                     </div>
                 </a>
             </div>
         </div>
     </nav>
 
-    <main class="flex-grow flex flex-col items-center justify-center p-4">
+    <main class="flex-grow flex flex-col items-center p-4 py-8">
 
-        <div class="w-full max-w-md bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden mb-6">
-            <div class="bg-blue-600 px-6 py-4">
-                <h2 class="text-lg font-bold text-white flex items-center">
-                    <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" />
-                    Cek Status Pendaftaran
-                </h2>
+        {{-- Header Section --}}
+        <div class="text-center mb-6">
+            <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full mb-4 shadow-lg">
+                <x-heroicon-o-magnifying-glass class="w-8 h-8 text-white" />
             </div>
-
-            <div class="p-6">
-                <form action="{{ route('registration.check-status') }}" method="POST">
-                    @csrf
-
-                    @if(session('error'))
-                    <div class="bg-red-50 text-red-600 text-sm p-3 rounded-md mb-4 flex items-center">
-                        <x-heroicon-o-exclamation-circle class="w-5 h-5 mr-2" />
-                        {{ session('error') }}
-                    </div>
-                    @endif
-
-                    <div class="space-y-4">
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Pendaftaran</label>
-                            <input type="text" name="registration_number" value="{{ old('registration_number') }}"
-                                required placeholder="Contoh: PPDB2025ABCDE"
-                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 uppercase">
-                        </div>
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir</label>
-                            <input type="date" name="birth_date" value="{{ old('birth_date') }}" required
-                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <p class="text-xs text-gray-500 mt-1">*Digunakan untuk verifikasi keamanan.</p>
-                        </div>
-
-                        <button type="submit"
-                            class="w-full bg-blue-600 text-white font-bold py-2 rounded-md hover:bg-blue-700 transition shadow-sm">
-                            Cek Status
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-2">Cek Status</h1>
+            <p class="text-gray-500">Pilih jenis pengecekan status yang ingin Anda lakukan</p>
         </div>
 
+        {{-- Tab Container --}}
+        <div class="w-full max-w-lg" x-data="{ activeTab: '{{ isset($examRegistrant) ? 'upload' : 'persyaratan' }}' }">
+            
+            {{-- Tab Buttons --}}
+            <div class="flex mb-6 bg-gray-100 rounded-xl p-1.5">
+                <button @click="activeTab = 'persyaratan'" 
+                    :class="activeTab === 'persyaratan' ? 'bg-white shadow-md text-blue-600' : 'text-gray-600 hover:text-gray-800'"
+                    class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold text-sm transition-all duration-200">
+                    <x-heroicon-o-clipboard-document-check class="w-5 h-5" />
+                    <span>Kelengkapan Persyaratan</span>
+                </button>
+                <button @click="activeTab = 'upload'"
+                    :class="activeTab === 'upload' ? 'bg-white shadow-md text-purple-600' : 'text-gray-600 hover:text-gray-800'"
+                    class="flex-1 flex items-center justify-center gap-2 px-4 py-3 rounded-lg font-semibold text-sm transition-all duration-200">
+                    <x-heroicon-o-cloud-arrow-up class="w-5 h-5" />
+                    <span>Upload Tes</span>
+                </button>
+            </div>
+
+            {{-- Tab Content: Kelengkapan Persyaratan --}}
+            <div x-show="activeTab === 'persyaratan'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0">
+                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-4">
+                        <h2 class="text-lg font-bold text-white flex items-center">
+                            <x-heroicon-o-clipboard-document-check class="w-5 h-5 mr-2" />
+                            Cek Kelengkapan Persyaratan
+                        </h2>
+                        <p class="text-blue-100 text-sm mt-1">Cek status dokumen pendaftaran Anda</p>
+                    </div>
+
+                    <div class="p-6">
+                        <form action="{{ route('registration.check-status') }}" method="POST">
+                            @csrf
+
+                            @if(session('error'))
+                            <div class="bg-red-50 text-red-600 text-sm p-3 rounded-md mb-4 flex items-center">
+                                <x-heroicon-o-exclamation-circle class="w-5 h-5 mr-2" />
+                                {{ session('error') }}
+                            </div>
+                            @endif
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Pendaftaran / NISN <span class="text-red-500">*</span></label>
+                                    <input type="text" name="registration_number" value="{{ old('registration_number') }}"
+                                        required placeholder="Contoh: PPDB2025XXXXX atau NISN"
+                                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 uppercase">
+                                    <p class="text-xs text-gray-500 mt-1">Masukkan Nomor Pendaftaran atau NISN Anda.</p>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Tanggal Lahir <span class="text-red-500">*</span></label>
+                                    <input type="date" name="birth_date" value="{{ old('birth_date') }}" required
+                                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    <p class="text-xs text-gray-500 mt-1">Digunakan untuk verifikasi keamanan.</p>
+                                </div>
+
+                                <button type="submit"
+                                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 rounded-md hover:from-blue-700 hover:to-indigo-700 transition shadow-md flex items-center justify-center">
+                                    <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" />
+                                    Cek Status Persyaratan
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            {{-- Tab Content: Upload Tes --}}
+            <div x-show="activeTab === 'upload'" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 translate-y-2" x-transition:enter-end="opacity-100 translate-y-0" style="display: none;"
+                x-data="{
+                    regNumber: '',
+                    loading: false,
+                    searched: false,
+                    error: null,
+                    result: null,
+                    async checkStatus() {
+                        if (!this.regNumber.trim()) {
+                            this.error = 'Nomor pendaftaran wajib diisi.';
+                            return;
+                        }
+                        this.loading = true;
+                        this.error = null;
+                        this.result = null;
+                        
+                        try {
+                            const response = await fetch('{{ route('registration.check-exam-status.ajax') }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                    'Accept': 'application/json'
+                                },
+                                body: JSON.stringify({ registration_number: this.regNumber.toUpperCase() })
+                            });
+                            const data = await response.json();
+                            
+                            if (data.success) {
+                                this.result = data;
+                            } else {
+                                this.error = data.message;
+                            }
+                        } catch (err) {
+                            this.error = 'Terjadi kesalahan. Silakan coba lagi.';
+                        }
+                        
+                        this.loading = false;
+                        this.searched = true;
+                    }
+                }">
+                <div class="bg-white rounded-xl shadow-md border border-gray-100 overflow-hidden">
+                    <div class="bg-blue-600 px-6 py-4">
+                        <h2 class="text-lg font-bold text-white flex items-center">
+                            <x-heroicon-o-cloud-arrow-up class="w-5 h-5 mr-2" />
+                            Cek Status Upload Tes
+                        </h2>
+                        <p class="text-purple-100 text-sm mt-1">Cek status upload hasil tes minat & bakat</p>
+                    </div>
+
+                    <div class="p-6">
+                        {{-- Error Message --}}
+                        <div x-show="error" x-transition class="bg-red-50 text-red-600 text-sm p-3 rounded-md mb-4 flex items-center">
+                            <svg class="w-5 h-5 mr-2 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                            </svg>
+                            <span x-text="error"></span>
+                        </div>
+
+                        <p class="text-sm text-gray-600 mb-4">Masukkan nomor pendaftaran untuk mengecek status upload hasil tes minat & bakat Anda:</p>
+                        
+                        <form @submit.prevent="checkStatus()" class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Pendaftaran <span class="text-red-500">*</span></label>
+                                <input type="text" x-model="regNumber"
+                                    required placeholder="Contoh: PPDB2025XXXXX"
+                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-purple-500 focus:ring-purple-500 uppercase">
+                            </div>
+                            
+                            <button type="submit" :disabled="loading"
+                                class="w-full bg-blue-600 text-white font-bold py-3 rounded-md transition shadow-md flex items-center justify-center disabled:opacity-50">
+                                <template x-if="loading">
+                                    <svg class="animate-spin w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
+                                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                    </svg>
+                                </template>
+                                <template x-if="!loading">
+                                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                    </svg>
+                                </template>
+                                <span x-text="loading ? 'Mencari...' : 'Cek Status Upload'"></span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                {{-- Result Section for Exam Status (AJAX) --}}
+                <div x-show="result" x-transition class="mt-4 bg-white rounded-xl shadow-lg border border-purple-100 overflow-hidden">
+                    <div class="p-4 text-center border-b border-gray-100 bg-gradient-to-r from-purple-50 to-pink-50">
+                        <h3 class="text-lg font-bold text-gray-900" x-text="result?.registrant?.name"></h3>
+                        <p class="text-gray-500 text-sm" x-text="result?.registrant?.registration_number"></p>
+                    </div>
+
+                    <div class="p-6">
+                        {{-- Upload Complete --}}
+                        <template x-if="result?.exam_result?.exam1_image && result?.exam_result?.exam2_image">
+                            <div>
+                                <div class="text-center mb-5">
+                                    <div class="inline-flex items-center justify-center w-16 h-16 bg-green-100 rounded-full mb-3">
+                                        <svg class="w-10 h-10 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <h4 class="text-lg font-bold text-green-800">Tes Minat & Bakat Selesai!</h4>
+                                    <p class="text-sm text-green-600">Kedua hasil tes sudah berhasil diupload.</p>
+                                </div>
+                                
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    {{-- Tes Jurusan --}}
+                                    <div class="bg-gray-50 rounded-lg border border-gray-200 p-3">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <p class="text-sm font-bold text-purple-700">Tes Jurusan</p>
+                                            <span class="px-2 py-0.5 text-xs bg-green-100 text-green-700 rounded-full">Uploaded</span>
+                                        </div>
+                                        <a :href="result?.exam_result?.exam1_image" target="_blank" class="block">
+                                            <img :src="result?.exam_result?.exam1_image" alt="Hasil Tes Jurusan" 
+                                                class="w-full h-28 object-cover rounded-lg border border-gray-200 hover:border-purple-400 transition">
+                                        </a>
+                                        <a :href="result?.exam_result?.exam1_image" target="_blank"
+                                            class="mt-2 w-full block text-center text-xs py-1.5 bg-purple-50 text-purple-600 rounded hover:bg-purple-100 transition">
+                                            <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg> Lihat Gambar
+                                        </a>
+                                    </div>
+                                    
+                                    {{-- Tes Multiple Intelligences --}}
+                                    <div class="bg-gray-50 rounded-lg border border-gray-200 p-3">
+                                        <div class="flex items-center justify-between mb-2">
+                                            <p class="text-sm font-bold text-pink-700">Tes Multiple Intelligences</p>
+                                            <span class="px-2 py-0.5 text-xs bg-green-100 text-green-700 rounded-full">Uploaded</span>
+                                        </div>
+                                        <a :href="result?.exam_result?.exam2_image" target="_blank" class="block">
+                                            <img :src="result?.exam_result?.exam2_image" alt="Hasil Tes Multiple Intelligences" 
+                                                class="w-full h-28 object-cover rounded-lg border border-gray-200 hover:border-pink-400 transition">
+                                        </a>
+                                        <a :href="result?.exam_result?.exam2_image" target="_blank"
+                                            class="mt-2 w-full block text-center text-xs py-1.5 bg-pink-50 text-pink-600 rounded hover:bg-pink-100 transition">
+                                            <svg class="w-3 h-3 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                                            </svg> Lihat Gambar
+                                        </a>
+                                    </div>
+                                </div>
+
+                                <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
+                                    <p class="text-xs text-green-700">
+                                        <svg class="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                        Data tes Anda sudah tercatat. Hasil seleksi akan diumumkan di halaman Pengumuman Seleksi.
+                                    </p>
+                                </div>
+                            </div>
+                        </template>
+                        
+                        {{-- Upload Not Complete --}}
+                        <template x-if="result && (!result?.exam_result?.exam1_image || !result?.exam_result?.exam2_image)">
+                            <div class="text-center">
+                                <div class="inline-flex items-center justify-center w-16 h-16 bg-amber-100 rounded-full mb-3">
+                                    <svg class="w-10 h-10 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                                    </svg>
+                                </div>
+                                <h4 class="text-lg font-bold text-amber-800">Belum Mengikuti Tes</h4>
+                                <p class="text-sm text-amber-600 mb-2">Anda belum mengupload hasil tes minat & bakat.</p>
+                                
+                                {{-- Status checklist --}}
+                                <div class="my-4 text-left max-w-xs mx-auto space-y-2">
+                                    <div class="flex items-center justify-between text-sm py-1.5 px-3 rounded" 
+                                        :class="result?.exam_result?.exam1_image ? 'bg-green-50' : 'bg-red-50'">
+                                        <span :class="result?.exam_result?.exam1_image ? 'text-green-800' : 'text-red-800'">Tes Jurusan</span>
+                                        <span x-show="result?.exam_result?.exam1_image" class="flex items-center text-green-600 text-xs">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg> Uploaded
+                                        </span>
+                                        <span x-show="!result?.exam_result?.exam1_image" class="flex items-center text-red-600 text-xs">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg> Belum
+                                        </span>
+                                    </div>
+                                    <div class="flex items-center justify-between text-sm py-1.5 px-3 rounded" 
+                                        :class="result?.exam_result?.exam2_image ? 'bg-green-50' : 'bg-red-50'">
+                                        <span :class="result?.exam_result?.exam2_image ? 'text-green-800' : 'text-red-800'">Tes Multiple Intelligences</span>
+                                        <span x-show="result?.exam_result?.exam2_image" class="flex items-center text-green-600 text-xs">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg> Uploaded
+                                        </span>
+                                        <span x-show="!result?.exam_result?.exam2_image" class="flex items-center text-red-600 text-xs">
+                                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg> Belum
+                                        </span>
+                                    </div>
+                                </div>
+                                
+                                <a href="{{ route('ujian-tes') }}" 
+                                    class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-md hover:from-purple-700 hover:to-pink-700 transition shadow-md">
+                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                                    </svg>
+                                    Upload Hasil Tes Sekarang
+                                </a>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        {{-- Result Section (for Kelengkapan Persyaratan) --}}
         @if(isset($registrant))
-        <div
-            class="w-full max-w-md bg-white rounded-xl shadow-lg border border-blue-100 overflow-hidden animate-fade-in-up">
+        <div class="w-full max-w-lg mt-6 bg-white rounded-xl shadow-lg border border-blue-100 overflow-hidden animate-fade-in-up">
             <div class="p-6 text-center border-b border-gray-100">
                 <div class="mb-2">
                     <span
@@ -153,9 +416,48 @@
                 @endif
             </div>
 
+            {{-- Kelengkapan Persyaratan --}}
+            <div class="p-6 border-t border-gray-100">
+                <h4 class="text-sm font-bold text-gray-800 mb-3 flex items-center">
+                    <x-heroicon-o-clipboard-document-check class="w-4 h-4 mr-1" />
+                    Kelengkapan Persyaratan
+                </h4>
+                @php
+                    $requiredDocs = [
+                        'kartu_keluarga' => 'Kartu Keluarga (KK)',
+                        'akta_kelahiran' => 'Akta Kelahiran',
+                        'pas_foto' => 'Pas Foto',
+                        'ijazah_skl' => 'Ijazah / SKL',
+                        'surat_dokter' => 'Surat Keterangan Sehat',
+                        'sertifikat_prestasi' => 'Prestasi / Piagam',
+                    ];
+                    $uploadedDocs = $registrant->documents->pluck('document_type')->toArray();
+                @endphp
+                
+                <div class="space-y-2">
+                    @foreach($requiredDocs as $type => $label)
+                    <div class="flex items-center justify-between text-sm py-1.5 px-2 rounded {{ in_array($type, $uploadedDocs) ? 'bg-green-50' : 'bg-red-50' }}">
+                        <span class="{{ in_array($type, $uploadedDocs) ? 'text-green-800' : 'text-red-800' }}">{{ $label }}</span>
+                        @if(in_array($type, $uploadedDocs))
+                        <span class="flex items-center text-green-600">
+                            <x-heroicon-o-check-circle class="w-4 h-4 mr-1" />
+                            Lengkap
+                        </span>
+                        @else
+                        <span class="flex items-center text-red-600">
+                            <x-heroicon-o-x-circle class="w-4 h-4 mr-1" />
+                            Belum
+                        </span>
+                        @endif
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+
             <div class="p-4 bg-white border-t border-gray-100">
                 <a href="{{ route('registration.print', $registrant->registration_number) }}" target="_blank"
-                    class="block w-full text-center text-blue-600 font-bold hover:underline">
+                    class="block w-full text-center bg-blue-50 text-blue-600 font-bold py-2 rounded-md hover:bg-blue-100 transition">
+                    <x-heroicon-o-printer class="w-4 h-4 inline mr-1" />
                     Cetak Ulang Bukti Pendaftaran
                 </a>
             </div>

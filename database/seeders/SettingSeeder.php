@@ -16,22 +16,22 @@ class SettingSeeder extends Seeder
         $settings = [
             [
                 'key' => 'school_name',
-                'value' => 'SMK Rohmatul Ummah',
+                'value' => 'SMK AL-GHIFARI BANYURESMI',
                 'type' => 'string'
             ],
             [
                 'key' => 'school_address',
-                'value' => 'Baladil Amin, Pulutan, 005/003, Jekulo Kudus',
+                'value' => 'Jl H.Hasan  Arif No.203, Banyueresmi, Kabupaten Garut Jawa Barat',
                 'type' => 'string'
             ],
             [
                 'key' => 'school_phone',
-                'value' => '+62 877-5418-9830',
+                'value' => '+6288 8600 9966',
                 'type' => 'string'
             ],
             [
                 'key' => 'school_email',
-                'value' => 'smkrohum@gmail.com ',
+                'value' => 'smkalghifari@gmail.com',
                 'type' => 'string'
             ],
 
@@ -73,7 +73,7 @@ class SettingSeeder extends Seeder
             // Committee Info
             [
                 'key' => 'committee_head_name',
-                'value' => 'Aufa Shihabudin Ridho',
+                'value' => 'Muhammad Yajid, S.Pd',
                 'type' => 'string'
             ],
             [

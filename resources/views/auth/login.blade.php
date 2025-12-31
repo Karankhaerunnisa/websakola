@@ -9,7 +9,7 @@
         @php
         // Fetch dynamic logo and name
         $logo = \App\Models\Setting::getValue('app_logo', 'default.png');
-        $schoolName = \App\Models\Setting::getValue('school_name', 'SMK Rohmatul Ummah');
+        $schoolName = \App\Models\Setting::getValue('school_name', 'SMK Al-Ghifari Banyuresmi');
         @endphp
 
         <div class="flex justify-center mb-4">
@@ -78,6 +78,13 @@
                 &copy; {{ date('Y') }} {{ $schoolName }}. All rights reserved.
             </p>
         </div>
+    </div>
+
+    <div class="mt-6">
+        <a href="{{ route('home') }}" class="text-sm text-gray-600 hover:text-blue-600 flex items-center justify-center transition">
+            <x-heroicon-o-arrow-left class="w-4 h-4 mr-1" />
+            Kembali ke Beranda
+        </a>
     </div>
 </div>
 @endsection

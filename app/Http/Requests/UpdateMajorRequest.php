@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UpdateMajorRequest extends FormRequest
 {
@@ -22,10 +23,11 @@ class UpdateMajorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => ['required', 'string', 'max:10', 'unique:majors,code,code'],
+            'code' => ['required', 'string', 'max:10', Rule::unique('majors', 'code')->ignore($this->route('major'))],
             'name' => ['required', 'string', 'max:100'],
             'quota' => ['required', 'integer', 'min:0'],
             'description' => ['nullable', 'string'],
+            'logo' => ['nullable', 'image', 'mimes:jpg,jpeg,png,webp', 'max:512'],
         ];
     }
 }

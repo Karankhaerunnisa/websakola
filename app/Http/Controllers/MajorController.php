@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMajorRequest;
 use App\Http\Requests\UpdateMajorRequest;
 use App\Models\Major;
+use Illuminate\Support\Facades\Storage;
 
 class MajorController extends Controller
 {
@@ -23,7 +24,17 @@ class MajorController extends Controller
      */
     public function store(StoreMajorRequest $request)
     {
-        Major::create($request->validated());
+        $data = $request->validated();
+
+        // Handle logo upload
+        if ($request->hasFile('logo')) {
+            $file = $request->file('logo');
+            $fileName = $data['code'] . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('majors', $fileName, 'public');
+            $data['logo'] = $fileName;
+        }
+
+        Major::create($data);
 
         return back()->with('success', 'Jurusan berhasil ditambahkan.');
     }
@@ -41,7 +52,22 @@ class MajorController extends Controller
      */
     public function update(UpdateMajorRequest $request, Major $major)
     {
-        $major->update($request->validated());
+        $data = $request->validated();
+
+        // Handle logo upload
+        if ($request->hasFile('logo')) {
+            // Delete old logo if exists
+            if ($major->logo) {
+                Storage::disk('public')->delete('majors/' . $major->logo);
+            }
+            
+            $file = $request->file('logo');
+            $fileName = $data['code'] . '_' . time() . '.' . $file->getClientOriginalExtension();
+            $file->storeAs('majors', $fileName, 'public');
+            $data['logo'] = $fileName;
+        }
+
+        $major->update($data);
 
         return back()->with('success', 'Jurusan berhasil diperbarui.');
     }
@@ -53,6 +79,11 @@ class MajorController extends Controller
     {
         if ($major->registrants->count() > 0) {
             return back()->with('error', 'Gagal Menghapus! Masih ada siswa yang mendaftar di jurusan ini.');
+        }
+
+        // Delete logo file if exists
+        if ($major->logo) {
+            Storage::disk('public')->delete('majors/' . $major->logo);
         }
 
         $major->delete();

@@ -6,10 +6,12 @@ use App\Enums\RegistrantStatus;
 use App\Exports\RegistrantsExport;
 use App\Http\Requests\StoreRegistrantRequest;
 use App\Http\Requests\UpdateRegistrantRequest;
+use App\Models\ExamResult;
 use App\Models\Major;
 use App\Models\Registrant;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Facades\Excel;
 
 class RegistrantController extends Controller
@@ -65,7 +67,7 @@ class RegistrantController extends Controller
      */
     public function show(Registrant $registrant)
     {
-        $registrant->load(['major', 'address', 'guardians', 'academic']);
+        $registrant->load(['major', 'address', 'guardians', 'academic', 'documents', 'examResult']);
 
         return view('admin.registrants.partials.detail-modal', compact('registrant'));
     }
@@ -103,5 +105,25 @@ class RegistrantController extends Controller
     {
         return Excel::download(new RegistrantsExport($request), 'data-pendaftar-'. now()->format('d-m-Y').'.xlsx');
         // return (new RegistrantsExport($request))->download('data-pendaftar-'. now()->format('d-m-Y').'.xlsx');
+    }
+
+    public function deleteExamResult(Registrant $registrant)
+    {
+        $examResult = ExamResult::where('registrant_id', $registrant->id)->first();
+
+        if ($examResult) {
+            // Delete files from storage
+            if ($examResult->exam1_image) {
+                Storage::disk('public')->delete('exam_results/' . $examResult->exam1_image);
+            }
+            if ($examResult->exam2_image) {
+                Storage::disk('public')->delete('exam_results/' . $examResult->exam2_image);
+            }
+            
+            // Delete record
+            $examResult->delete();
+        }
+
+        return back()->with('success', 'Hasil tes minat & bakat berhasil dihapus. Siswa dapat mengupload ulang.');
     }
 }

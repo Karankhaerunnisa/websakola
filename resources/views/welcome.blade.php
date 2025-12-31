@@ -10,6 +10,8 @@
 
 <body class="bg-gray-50 text-gray-800 font-sans antialiased">
 
+  
+
     <nav x-data="{ open: false }" class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -27,17 +29,12 @@
                     </div>
                 </div>
 
-                <div class="hidden md:flex items-center space-x-4">
-                    <a href="{{ route('registration.check-status.form') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
-                        <x-heroicon-o-magnifying-glass class="w-4 h-4 mr-1" />
-                        Cek Status
-                    </a>
-
-                    <a href="{{ route('login') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
+                <div class="hidden md:flex items-center space-x-4 relative z-10">
+                    
+                    <a href="/login"
+                        class="text-sm font-medium bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center transition cursor-pointer">
                         <x-heroicon-o-lock-closed class="w-4 h-4 mr-1" />
-                        Admin
+                        Login
                     </a>
                 </div>
 
@@ -59,15 +56,35 @@
             x-transition:leave-end="opacity-0 -translate-y-2" class="md:hidden border-t border-gray-100 bg-white"
             style="display: none;">
 
-            <div class="pt-2 pb-3 space-y-1 px-4">
+            <!--<div class="pt-2 pb-3 space-y-1 px-4">
+                <a href="{{ route('formulir') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-pencil-square class="w-5 h-5 mr-2" />
+                        Formulir
+                    </div>
+                </a>
                 <a href="{{ route('registration.check-status.form') }}"
                     class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
                     <div class="flex items-center">
-                        <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" />
+                        <x-heroicon-o-clipboard-document-check class="w-5 h-5 mr-2" />
                         Cek Status
                     </div>
                 </a>
-
+                <a href="{{ route('ujian-tes') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-document-text class="w-5 h-5 mr-2" />
+                        Tes Minat & Bakat
+                    </div>
+                </a>
+                <a href="{{ route('pengumuman-seleksi') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-academic-cap class="w-5 h-5 mr-2" />
+                        Pengumuman Seleksi
+                    </div>
+                </a>-->
                 <a href="{{ route('login') }}"
                     class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
                     <div class="flex items-center">
@@ -79,76 +96,220 @@
         </div>
     </nav>
 
-    <div class="relative bg-blue-900 text-white overflow-hidden">
-        <div
-            class="absolute inset-0 opacity-20 bg-[url('https://source.unsplash.com/1600x900/?school')] bg-cover bg-center">
+    {{-- Hero Carousel Section --}}
+    <div x-data="{
+        activeSlide: 0,
+        slides: [
+            {
+                image: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1600&h=900&fit=crop',
+                title: 'Selamat Datang di SPMB Online',
+                subtitle: '{{ \App\Models\Setting::getValue('school_name') }}',
+                gradient: 'from-blue-600 via-blue-700 to-indigo-800'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1562774053-701939374585?w=1600&h=900&fit=crop',
+                title: 'Raih Masa Depanmu Bersama Kami',
+                subtitle: 'Pendidikan Berkualitas untuk Generasi Unggul',
+                gradient: 'from-purple-600 via-purple-700 to-pink-700'
+            },
+            {
+                image: 'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1600&h=900&fit=crop',
+                title: 'Fasilitas Modern & Lengkap',
+                subtitle: 'Lingkungan Belajar yang Nyaman dan Kondusif',
+                gradient: 'from-emerald-600 via-teal-600 to-cyan-700'
+            }
+        ],
+        autoplay: null,
+        startAutoplay() {
+            this.autoplay = setInterval(() => {
+                this.activeSlide = (this.activeSlide + 1) % this.slides.length;
+            }, 5000);
+        },
+        stopAutoplay() {
+            clearInterval(this.autoplay);
+        },
+        goToSlide(index) {
+            this.activeSlide = index;
+            this.stopAutoplay();
+            this.startAutoplay();
+        },
+        nextSlide() {
+            this.activeSlide = (this.activeSlide + 1) % this.slides.length;
+            this.stopAutoplay();
+            this.startAutoplay();
+        },
+        prevSlide() {
+            this.activeSlide = (this.activeSlide - 1 + this.slides.length) % this.slides.length;
+            this.stopAutoplay();
+            this.startAutoplay();
+        }
+    }" x-init="startAutoplay()" class="relative w-full h-[500px] md:h-[600px] overflow-hidden">
+        
+        {{-- Slides Container --}}
+        <div class="relative w-full h-full">
+            <template x-for="(slide, index) in slides" :key="index">
+                <div x-show="activeSlide === index"
+                    x-transition:enter="transition ease-out duration-700"
+                    x-transition:enter-start="opacity-0 transform scale-105"
+                    x-transition:enter-end="opacity-100 transform scale-100"
+                    x-transition:leave="transition ease-in duration-500"
+                    x-transition:leave-start="opacity-100 transform scale-100"
+                    x-transition:leave-end="opacity-0 transform scale-95"
+                    class="absolute inset-0 w-full h-full">
+                    
+                    {{-- Background Image --}}
+                    <div class="absolute inset-0">
+                        <img :src="slide.image" :alt="slide.title" class="w-full h-full object-cover">
+                        <div class="absolute inset-0 bg-gradient-to-r opacity-80" :class="slide.gradient"></div>
+                        <div class="absolute inset-0 bg-black/30"></div>
+                    </div>
+                    
+                    {{-- Content --}}
+                    <div class="relative h-full flex items-center justify-center">
+                        <div class="max-w-4xl mx-auto px-6 text-center text-white">
+                            <h1 x-text="slide.title" class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-4 drop-shadow-lg animate-fade-in-up"></h1>
+                            <p x-text="slide.subtitle" class="text-xl md:text-2xl text-white/90 mb-8 drop-shadow-md"></p>
+                            
+                            @if($isOpen)
+                            <div class="inline-flex items-center bg-green-500 text-white px-6 py-2 rounded-full font-bold shadow-lg animate-bounce mb-6">
+                                <x-heroicon-o-check-circle class="w-6 h-6 mr-2" />
+                                Pendaftaran Dibuka
+                            </div>
+                            <!--<div class="mt-4">
+                                <a href="{{ route('formulir') }}"
+                                    class="inline-flex items-center bg-white text-blue-900 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition-all duration-300 shadow-xl hover:shadow-2xl hover:-translate-y-1">
+                                    <x-heroicon-o-pencil-square class="w-5 h-5 mr-2" />
+                                    Daftar Sekarang
+                                </a>
+                            </div>-->
+                            @else
+                            <div class="inline-flex items-center bg-red-500/90 text-white px-6 py-3 rounded-full font-bold shadow-lg">
+                                <x-heroicon-o-x-circle class="w-6 h-6 mr-2" />
+                                Pendaftaran Ditutup
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </template>
         </div>
-        <div class="relative max-w-7xl mx-auto px-4 py-24 sm:px-6 lg:px-8 text-center">
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Selamat Datang di SPMB Online</h1>
-            <p class="text-xl text-blue-100 mb-8">{{ \App\Models\Setting::getValue('school_name') }}</p>
 
-            @if($isOpen)
-            <div
-                class="inline-flex items-center bg-green-500 text-white px-6 py-2 rounded-full font-bold shadow-lg animate-bounce">
-                <x-heroicon-o-check-circle class="w-6 h-6 mr-2" />
-                Pendaftaran Dibuka
-            </div>
-            <div class="mt-8">
-                <a href="#register"
-                    class="bg-white text-blue-900 px-8 py-3 rounded-md font-bold text-lg hover:bg-gray-100 transition shadow-xl">
-                    Daftar Sekarang
-                </a>
-            </div>
-            @else
-            <div class="inline-flex items-center bg-red-500 text-white px-6 py-2 rounded-full font-bold shadow-lg">
-                <x-heroicon-o-x-circle class="w-6 h-6 mr-2" />
-                Pendaftaran Ditutup
-            </div>
-            @endif
+        {{-- Navigation Arrows --}}
+        <button @click="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/40 transition-all duration-300 group">
+            <x-heroicon-o-chevron-left class="w-6 h-6 group-hover:scale-110 transition-transform" />
+        </button>
+        <button @click="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center text-white hover:bg-white/40 transition-all duration-300 group">
+            <x-heroicon-o-chevron-right class="w-6 h-6 group-hover:scale-110 transition-transform" />
+        </button>
+
+        {{-- Dots Indicator --}}
+        <div class="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center space-x-3">
+            <template x-for="(slide, index) in slides" :key="index">
+                <button @click="goToSlide(index)"
+                    :class="activeSlide === index ? 'w-8 bg-white' : 'w-3 bg-white/50 hover:bg-white/70'"
+                    class="h-3 rounded-full transition-all duration-300">
+                </button>
+            </template>
+        </div>
+
+        {{-- Slide Counter --}}
+        <div class="absolute bottom-6 right-6 bg-black/30 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-medium">
+            <span x-text="activeSlide + 1"></span> / <span x-text="slides.length"></span>
         </div>
     </div>
 
-    @if($announcements->count() > 0)
-    <div class="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
-        <h2 class="text-2xl font-bold text-center mb-8 text-gray-900">Pengumuman Terbaru</h2>
-        <div class="grid gap-6 md:grid-cols-3">
-            @foreach($announcements as $news)
-            <div class="bg-white p-6 rounded-lg shadow-sm border border-l-4 border-l-blue-500 flex flex-col h-full">
-                <div class="text-xs text-gray-500 mb-2 flex items-center">
-                    <x-heroicon-o-calendar class="w-3 h-3 mr-1" />
-                    {{ $news->published_at->format('d M Y') }}
+    {{-- Quick Info Cards --}}
+    <div class="relative -mt-12 md:-mt-16 z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
+            {{-- Card 1: Pendaftaran --}}
+            <a href="{{ route('formulir') }}" class="group bg-white rounded-xl shadow-lg p-4 sm:p-5 lg:p-6 flex flex-col sm:flex-row items-center sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+                <div class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <x-heroicon-o-pencil-square class="w-6 h-6 sm:w-7 sm:h-7 text-white" />
                 </div>
-
-                <h3 class="font-bold text-lg mb-2">
-                    <a href="{{ route('announcement.show', $news->id) }}" class="hover:text-blue-600 transition">
-                        {{ $news->title }}
-                    </a>
-                </h3>
-                <p class="text-gray-600 text-sm line-clamp-3 mb-4 flex-grow">
-                    {{ $news->content }}
-                </p>
-                <div class="mt-auto pt-2">
-                    <a href="{{ route('announcement.show', $news->id) }}"
-                        class="text-sm font-semibold text-blue-600 hover:text-blue-800 inline-flex items-center transition">
-                        Baca Selengkapnya
-                        <x-heroicon-o-arrow-long-right class="w-4 h-4 ml-1" />
-                    </a>
+                <div class="text-center sm:text-left">
+                    <h3 class="font-bold text-gray-900 group-hover:text-blue-600 transition-colors text-sm sm:text-base">Pendaftaran</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 hidden sm:block">Isi formulir pendaftaran</p>
                 </div>
-            </div>
-            @endforeach
+            </a>
+            
+            {{-- Card 2: Cek Status --}}
+            <a href="{{ route('registration.check-status.form') }}" class="group bg-white rounded-xl shadow-lg p-4 sm:p-5 lg:p-6 flex flex-col sm:flex-row items-center sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+                <div class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-emerald-500 to-emerald-600 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <x-heroicon-o-clipboard-document-check class="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                </div>
+                <div class="text-center sm:text-left">
+                    <h3 class="font-bold text-gray-900 group-hover:text-emerald-600 transition-colors text-sm sm:text-base">Cek Status</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 hidden sm:block">Lihat status pendaftaran</p>
+                </div>
+            </a>
+            
+            {{-- Card 3: Tes Minat & Bakat --}}
+            <a href="{{ route('ujian-tes') }}" class="group bg-white rounded-xl shadow-lg p-4 sm:p-5 lg:p-6 flex flex-col sm:flex-row items-center sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+                <div class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-amber-500 to-orange-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <x-heroicon-o-document-text class="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                </div>
+                <div class="text-center sm:text-left">
+                    <h3 class="font-bold text-gray-900 group-hover:text-orange-600 transition-colors text-sm sm:text-base">Tes Minat</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 hidden sm:block">Tes Jurusan & Kecerdasan</p>
+                </div>
+            </a>
+            
+            {{-- Card 4: Pengumuman --}}
+            <a href="{{ route('pengumuman-seleksi') }}" class="group bg-white rounded-xl shadow-lg p-4 sm:p-5 lg:p-6 flex flex-col sm:flex-row items-center sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100">
+                <div class="flex-shrink-0 w-12 h-12 sm:w-14 sm:h-14 bg-gradient-to-br from-purple-500 to-pink-500 rounded-xl flex items-center justify-center group-hover:scale-110 transition-transform">
+                    <x-heroicon-o-megaphone class="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                </div>
+                <div class="text-center sm:text-left">
+                    <h3 class="font-bold text-gray-900 group-hover:text-purple-600 transition-colors text-sm sm:text-base">Pengumuman</h3>
+                    <p class="text-xs sm:text-sm text-gray-500 hidden sm:block">Hasil seleksi penerimaan</p>
+                </div>
+            </a>
         </div>
     </div>
-    @endif
+  {{-- Teks Berjalan Pengumuman --}}
+    <div class="bg-white text-black py-2 overflow-hidden">
+        <div class="animate-marquee whitespace-nowrap flex items-center">
+            <span class="mx-8 flex items-center">
+                <x-heroicon-o-ex`clamation-triangle class="w-5 h-5 mr-2" />
+                <strong>Pengumuman:</strong>&nbsp;Pelaksanaan SPMB Online tidak dipungut biaya (GRATIS)
+            </span>
+           
+        </div>
+    </div>
 
+    <style>
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-33.33%); }
+        }
+        .animate-marquee {
+            animation: marquee 15s linear infinite;
+        }
+    </style>
     <div class="bg-white py-12 border-y border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-2xl font-bold text-center mb-8 text-gray-900">Program Keahlian</h2>
             <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
                 @foreach($majors as $major)
+                @php
+                    // Mapping kode jurusan ke icon dan warna
+                    $iconMap = [
+                        'RPL' => ['icon' => 'code-bracket', 'color' => 'blue'],
+                        'AKL' => ['icon' => 'calculator', 'color' => 'amber'],
+                        'MP' => ['icon' => 'building-office', 'color' => 'cyan'],
+                        'TKR' => ['icon' => 'wrench-screwdriver', 'color' => 'red'],
+                        'TSM' => ['icon' => 'cog-6-tooth', 'color' => 'slate'],
+                        'FARMASI' => ['icon' => 'beaker', 'color' => 'emerald'],
+                     
+                    ];
+                    $majorCode = strtoupper($major->code);
+                    $iconData = $iconMap[$majorCode] ?? ['icon' => 'academic-cap', 'color' => 'blue'];
+                    $iconName = 'heroicon-o-' . $iconData['icon'];
+                    $color = $iconData['color'];
+                @endphp
                 <div class="p-6 rounded-lg border border-gray-100 hover:shadow-md transition text-center group">
-                    <div
-                        class="w-12 h-12 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-600 group-hover:text-white transition">
-                        <x-heroicon-o-academic-cap class="w-6 h-6" />
+                    <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 bg-{{ $color }}-100 group-hover:bg-{{ $color }}-600 transition">
+                        <x-dynamic-component :component="$iconName" class="w-8 h-8 text-{{ $color }}-600 group-hover:text-white transition" />
                     </div>
                     <h3 class="font-bold text-gray-800 mb-2">{{ $major->name }}</h3>
                     <div class="text-sm text-gray-500 mb-3">{{ Str::limit($major->description, 60) }}</div>
@@ -160,344 +321,25 @@
             </div>
         </div>
     </div>
-
-    @if($isOpen)
-    <div id="register" class="max-w-4xl mx-auto px-4 py-16 sm:px-6 lg:px-8">
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
-            <div class="bg-blue-600 px-6 py-4 border-b border-blue-500">
-                <h2 class="text-xl font-bold text-white flex items-center">
-                    <x-heroicon-o-pencil-square class="w-6 h-6 mr-2" />
-                    Formulir Pendaftaran
-                </h2>
-                <p class="text-blue-100 text-sm mt-1">Isi data dengan benar sesuai Ijazah/KK.</p>
+    {{-- Call to Action - Daftar Sekarang --}}
+    <!--<div class="bg-gradient-to-r from-blue-600 to-indigo-700 py-16">
+        <div class="max-w-4xl mx-auto px-4 text-center">
+            <h2 class="text-3xl font-bold text-white mb-4">Siap Bergabung dengan Kami?</h2>
+            <p class="text-blue-100 text-lg mb-8">Isi formulir pendaftaran online dan mulai perjalanan pendidikanmu bersama kami.</p>
+            @if($isOpen)
+            <a href="{{ route('formulir') }}"
+                class="inline-flex items-center bg-white text-blue-700 px-8 py-4 rounded-lg font-bold text-lg hover:bg-gray-100 transition shadow-xl transform hover:-translate-y-1">
+                <x-heroicon-o-pencil-square class="w-6 h-6 mr-2" />
+                Isi Formulir Pendaftaran
+            </a>
+            @else
+            <div class="inline-flex items-center bg-red-500/20 text-white px-6 py-3 rounded-lg font-medium">
+                <x-heroicon-o-x-circle class="w-5 h-5 mr-2" />
+                Pendaftaran Saat Ini Ditutup
             </div>
-
-            <form action="{{ route('registration.store') }}" method="POST" class="p-8 space-y-8" x-data="{
-                      mtk: 0, indo: 0, ing: 0, ipa: 0,
-                      get average() {
-                          return ((Number(this.mtk) + Number(this.indo) + Number(this.ing) + Number(this.ipa)) / 4).toFixed(2);
-                      }
-                  }">
-                @csrf
-
-                @if ($errors->any())
-                <div id="form-errors"
-                    class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-md shadow-sm scroll-mt-24">
-                    <div class="flex items-start">
-                        <div class="flex-shrink-0">
-                            <x-heroicon-o-x-circle class="h-6 w-6 text-red-500" />
-                        </div>
-                        <div class="ml-3 w-full">
-                            <h3 class="text-sm font-bold text-red-800">
-                                Mohon perbaiki kesalahan berikut:
-                            </h3>
-                            <ul class="mt-2 list-disc list-inside text-sm text-red-700 space-y-1">
-                                @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-                    document.addEventListener("DOMContentLoaded", function() {
-            const errorBox = document.getElementById('form-errors');
-            if (errorBox) {
-                errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }
-        });
-                </script>
-                @endif
-
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Pilihan Jurusan</h3>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Pilih Jurusan
-                            <span class="text-red-500">*</span></label>
-                        <select name="major_id" required
-                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
-                            <option value="">-- Pilih Jurusan --</option>
-                            @foreach($majors as $major)
-                            <option value="{{ $major->id }}">{{ $major->name }} (Sisa: {{ $major->quota -
-                                $major->registrants_count }})</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Data Diri</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="md:col-span-2">
-                            <label class="block text-sm font-medium text-gray-700">Nama Lengkap
-                                <span class="text-red-500">*</span></label>
-                            <input type="text" name="name" value="{{ old('name') }}" required
-                                class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">NISN
-                                <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="nisn" value="{{ old('nisn') }}" maxlength="10"
-                                class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">NIK
-                                <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="nik" value="{{ old('nik') }}" maxlength="16"
-                                class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Tempat Lahir
-                                <span class="text-red-500">*</span>
-                            </label>
-                            <input type="text" name="birth_place" value="{{ old('birth_place') }}" required
-                                class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Tanggal Lahir
-                                <span class="text-red-500">*</span>
-                            </label>
-                            <input type="date" name="birth_date" value="{{ old('birth_date') }}" required
-                                class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Jenis Kelamin
-                                <span class="text-red-500">*</span>
-                            </label>
-                            <select name="gender" required
-                                class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                                @foreach(\App\Enums\Gender::cases() as $g)
-                                <option value="{{ $g->value }}">{{ $g->label() }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Agama
-                                <span class="text-red-500">*</span>
-                            </label>
-                            <select name="religion" required
-                                class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                                @foreach(\App\Enums\Religion::cases() as $r)
-                                <option value="{{ $r->value }}">{{ $r->label() }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Alamat & Kontak</h3>
-                    <div class="grid grid-cols-1 gap-6">
-
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700">Alamat Lengkap (Jalan/Dusun) <span
-                                    class="text-red-500">*</span></label>
-                            <textarea name="alamat" rows="2" required
-                                class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">{{ old('alamat') }}</textarea>
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">RT</label>
-                                <input type="text" name="rt" value="{{ old('rt') }}" maxlength="3"
-                                    class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">RW</label>
-                                <input type="text" name="rw" value="{{ old('rw') }}" maxlength="3"
-                                    class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Kode Pos
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <input type="number" name="kode_pos" value="{{ old('kode_pos') }}"
-                                    class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Kelurahan / Desa
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" name="kelurahan" value="{{ old('kelurahan') }}"
-                                    class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Kecamatan
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" name="kecamatan" value="{{ old('kecamatan') }}"
-                                    class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Kota / Kabupaten
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" name="kota" value="{{ old('kota') }}"
-                                    class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Provinsi
-                                    <span class="text-red-500">*</span>
-                                </label>
-                                <input type="text" name="provinsi" value="{{ old('provinsi') }}"
-                                    class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                            </div>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">No. HP (WhatsApp)
-                                    <span class="text-red-500">*</span></label>
-                                <input type="text" name="phone" value="{{ old('phone') }}" required
-                                    class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700">Email
-                                    <span class="text-red-500">*</span></label>
-                                <input type="email" name="email" value="{{ old('email') }}" required
-                                    class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Data Akademik</h3>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">Asal Sekolah
-                            <span class="text-red-500">*</span>
-                        </label>
-                        <input type="text" name="asal_sekolah" value="{{ old('asal_sekolah') }}" required
-                            class="mt-1 w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700">Tahun Lulus
-                            <span class="text-red-500">*</span>
-                        </label>
-                        <input type="number" name="tahun_lulus" value="{{ old('tahun_lulus') }}" required
-                            class="mt-1 w-full rounded-md border-gray-300 shadow-sm">
-                    </div>
-
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 items-end bg-blue-50 p-4 rounded-lg">
-                        <div>
-                            <label class="text-xs text-gray-600">Matematika</label>
-                            <input type="number" name="nilai_matematika" x-model="mtk" step="0.01"
-                                class="w-full text-sm rounded border-gray-300">
-                        </div>
-                        <div>
-                            <label class="text-xs text-gray-600">B. Indonesia</label>
-                            <input type="number" name="nilai_bahasa_indonesia" x-model="indo" step="0.01"
-                                class="w-full text-sm rounded border-gray-300">
-                        </div>
-                        <div>
-                            <label class="text-xs text-gray-600">B. Inggris</label>
-                            <input type="number" name="nilai_bahasa_inggris" x-model="ing" step="0.01"
-                                class="w-full text-sm rounded border-gray-300">
-                        </div>
-                        <div>
-                            <label class="text-xs text-gray-600">IPA</label>
-                            <input type="number" name="nilai_ipa" x-model="ipa" step="0.01"
-                                class="w-full text-sm rounded border-gray-300">
-                        </div>
-                        <div class="text-center col-span-2 md:col-span-1">
-                            <div class="text-xs text-gray-500 mb-1">Rata-Rata</div>
-                            <div class="font-bold text-xl text-blue-600" x-text="average">0.00</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div>
-                    <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Data Orang Tua</h3>
-
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                            <h4 class="font-bold text-blue-800 mb-3">Data Ayah</h4>
-
-                            <div class="space-y-3">
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase">Nama Ayah
-                                        <span class="text-red-500">*</span></label>
-                                    <input type="text" name="nama_ayah" value="{{ old('nama_ayah') }}" required
-                                        class="w-full text-sm rounded-md border-gray-300 shadow-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase">Pekerjaan</label>
-                                    <input type="text" name="pekerjaan_ayah" value="{{ old('pekerjaan_ayah') }}"
-                                        class="w-full text-sm rounded-md border-gray-300 shadow-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase">Penghasilan</label>
-                                    <select name="penghasilan_ayah"
-                                        class="w-full text-sm rounded-md border-gray-300 shadow-sm">
-                                        <option value="">-- Pilih --</option>
-                                        @foreach(\App\Enums\IncomeRange::cases() as $income)
-                                        <option value="{{ $income->value }}">{{ $income->label() }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase">No. HP Ayah</label>
-                                    <input type="text" name="no_hp_ayah" value="{{ old('no_hp_ayah') }}"
-                                        class="w-full text-sm rounded-md border-gray-300 shadow-sm">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200">
-                            <h4 class="font-bold text-pink-800 mb-3">Data Ibu</h4>
-
-                            <div class="space-y-3">
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase">Nama Ibu <span
-                                            class="text-red-500">*</span></label>
-                                    <input type="text" name="nama_ibu" value="{{ old('nama_ibu') }}" required
-                                        class="w-full text-sm rounded-md border-gray-300 shadow-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase">Pekerjaan</label>
-                                    <input type="text" name="pekerjaan_ibu" value="{{ old('pekerjaan_ibu') }}"
-                                        class="w-full text-sm rounded-md border-gray-300 shadow-sm">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase">Penghasilan</label>
-                                    <select name="penghasilan_ibu"
-                                        class="w-full text-sm rounded-md border-gray-300 shadow-sm">
-                                        <option value="">-- Pilih --</option>
-                                        @foreach(\App\Enums\IncomeRange::cases() as $income)
-                                        <option value="{{ $income->value }}">{{ $income->label() }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-gray-500 uppercase">No. HP Ibu</label>
-                                    <input type="text" name="no_hp_ibu" value="{{ old('no_hp_ibu') }}"
-                                        class="w-full text-sm rounded-md border-gray-300 shadow-sm">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="pt-6">
-                        <button type="submit"
-                            class="w-full bg-blue-600 text-white font-bold text-lg py-4 rounded-lg hover:bg-blue-700 shadow-lg transition transform hover:-translate-y-1">
-                            Kirim Pendaftaran
-                        </button>
-                    </div>
-
-            </form>
+            @endif
         </div>
-    </div>
-    @endif
+    </div>-->
 
     <footer class="bg-gray-900 text-white py-8 mt-12 text-center">
         <p>&copy; {{ date('Y') }} {{ \App\Models\Setting::getValue('school_name') }}. All Rights Reserved.</p>

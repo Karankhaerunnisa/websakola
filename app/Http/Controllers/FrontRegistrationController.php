@@ -28,6 +28,7 @@ class FrontRegistrationController extends Controller
             $registrant = Registrant::create([
                 'registration_number' => $regNumber,
                 'major_id' => $request->major_id,
+                'registration_path' => $request->registration_path,
                 'name' => $request->name,
                 'email' => $request->email,
                 'phone' => $request->phone,
@@ -84,6 +85,30 @@ class FrontRegistrationController extends Controller
                 'phone' => $request->no_hp_ibu,
             ]);
 
+            // 6. Upload Documents
+            $documentTypes = [
+                'dokumen_kk' => 'kartu_keluarga',
+                'dokumen_akta' => 'akta_kelahiran',
+                'dokumen_foto' => 'pas_foto',
+                'dokumen_ijazah' => 'ijazah_skl',
+                'dokumen_suratdokter' => 'surat_dokter',
+                'sertifikat_prestasi' => 'sertifikat_prestasi',
+            ];
+
+            foreach ($documentTypes as $inputName => $docType) {
+                if ($request->hasFile($inputName)) {
+                    $file = $request->file($inputName);
+                    $fileName = $regNumber . '_' . $docType . '_' . time() . '.' . $file->getClientOriginalExtension();
+                    $filePath = $file->storeAs('documents/' . $regNumber, $fileName, 'public');
+
+                    $registrant->documents()->create([
+                        'document_type' => $docType,
+                        'file_path' => $filePath,
+                        'file_name' => $file->getClientOriginalName(),
+                    ]);
+                }
+            }
+
             DB::commit();
 
             // Redirect to a specific "Success" page with the number
@@ -122,15 +147,76 @@ class FrontRegistrationController extends Controller
 
     public function checkStatus(CheckStatusRequest $request)
     {
-        $registrant = Registrant::where('registration_number', $request->validated('registration_number'))
+        $searchValue = $request->validated('registration_number');
+        
+        $registrant = Registrant::where(function($query) use ($searchValue) {
+            $query->where('registration_number', $searchValue)
+                  ->orWhere('nisn', $searchValue);
+        })
         ->where('birth_date', $request->validated('birth_date'))
-        ->with('major')
+        ->with(['major', 'documents'])
         ->first();
 
         if (! $registrant) {
-            return back()->with('error', 'Data pendaftar tidak ditemukan. Silakan periksa kembali nomor pendaftaran dan tanggal lahir Anda.')->withInput();
+            return back()->with('error', 'Data pendaftar tidak ditemukan. Silakan periksa kembali Nomor Pendaftaran/NISN dan tanggal lahir Anda.')->withInput();
         } else {
             return view('check-status', compact('registrant'));
         }
+    }
+
+    public function checkExamStatus(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'exam_registration_number' => 'required|string',
+        ], [
+            'exam_registration_number.required' => 'Nomor pendaftaran wajib diisi.',
+        ]);
+
+        $registrant = Registrant::where('registration_number', strtoupper($request->exam_registration_number))
+            ->with(['examResult'])
+            ->first();
+
+        if (! $registrant) {
+            return back()->with('exam_error', 'Nomor pendaftaran tidak ditemukan dalam sistem.')->withInput();
+        }
+
+        $examResult = $registrant->examResult;
+
+        return view('check-status', [
+            'examRegistrant' => $registrant,
+            'examResult' => $examResult,
+        ]);
+    }
+
+    public function checkExamStatusAjax(\Illuminate\Http\Request $request)
+    {
+        $request->validate([
+            'registration_number' => 'required|string',
+        ]);
+
+        $registrant = Registrant::where('registration_number', strtoupper($request->registration_number))
+            ->with(['examResult'])
+            ->first();
+
+        if (! $registrant) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Nomor pendaftaran tidak ditemukan dalam sistem.',
+            ]);
+        }
+
+        $examResult = $registrant->examResult;
+
+        return response()->json([
+            'success' => true,
+            'registrant' => [
+                'name' => $registrant->name,
+                'registration_number' => $registrant->registration_number,
+            ],
+            'exam_result' => $examResult ? [
+                'exam1_image' => $examResult->exam1_image ? asset('storage/exam_results/' . $examResult->exam1_image) : null,
+                'exam2_image' => $examResult->exam2_image ? asset('storage/exam_results/' . $examResult->exam2_image) : null,
+            ] : null,
+        ]);
     }
 }

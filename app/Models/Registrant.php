@@ -70,4 +70,14 @@ class Registrant extends Model
     {
         return $this->hasOne(RegistrantAcademic::class, 'registrant_id');
     }
+
+    public function documents(): HasMany
+    {
+        return $this->hasMany(RegistrantDocument::class, 'registrant_id');
+    }
+
+    public function examResult(): HasOne
+    {
+        return $this->hasOne(ExamResult::class, 'registrant_id');
+    }
 }

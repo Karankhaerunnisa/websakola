@@ -135,6 +135,38 @@
 
             </div>
 
+            <h3 class="text-lg font-bold text-gray-800 mt-5 mb-4 flex items-center border-b pb-2">
+                <x-heroicon-o-link class="w-5 h-5 mr-2 text-blue-600" />
+                Link Ujian/Tes
+            </h3>
+
+            <div class="space-y-4">
+
+                <div class="bg-blue-50 border border-blue-100 rounded-md p-3 mb-4">
+                    <p class="text-xs text-blue-700">
+                        <x-heroicon-o-information-circle class="w-4 h-4 inline mr-1" />
+                        Link ini akan ditampilkan di halaman <b>Ujian/Tes</b> untuk calon siswa mengikuti ujian online.
+                    </p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Link Tes Multiple Intelligence</label>
+                    <input type="url" name="exam_link_1"
+                        value="{{ old('exam_link_1', $settings['exam_link_1'] ?? '') }}"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                        placeholder="Tes Kompas Bakat: Temukan Kekuatan Unik Anda & Potensi Sejati">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Link Tes Pilihan Jurusan</label>
+                    <input type="url" name="exam_link_2"
+                        value="{{ old('exam_link_2', $settings['exam_link_2'] ?? '') }}"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                        placeholder="Jurusan mana yang seharusnya Saya ambil? (a.k.a Jurusan mana yang seharusnya Saya pilih?)">
+                </div>
+
+            </div>
+
             <h3 class="text-lg font-bold text-gray-800  mt-5 mb-4 flex items-center border-b pb-2">
                 <x-heroicon-o-users class="w-5 h-5 mr-2 text-blue-600" />
                 Data Panitia

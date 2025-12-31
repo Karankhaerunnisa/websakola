@@ -184,7 +184,7 @@
     <div class="title">BUKTI PENDAFTARAN PESERTA DIDIK BARU</div>
     <div class="number">Nomor: {{ $registrant->registration_number }}/SPMB/{{ now()->year }}</div>
 
-    <p>Yang bertanda tangan di bawah ini, Panitia Sistem Penerimaan Murid Baru (SPMB) SMK Rohmatul Ummah Tahun Ajaran
+    <p>Yang bertanda tangan di bawah ini, Panitia Sistem Penerimaan Murid Baru (SPMB) SMK AL-GHIFARI BANYURESMI Tahun Ajaran
         {{ \App\Models\Setting::getValue('academic_year', '2025/2026') }}, dengan ini menerangkan bahwa:</p>
 
     <table class="data-table">
@@ -240,6 +240,11 @@
             <td class="value">{{ $registrant->major->name }}</td>
         </tr>
         <tr>
+            <td class="label">Jalur Pendaftaran</td>
+            <td class="separator">:</td>
+            <td class="">{{ $registrant->registration_path == 'prestasi' ? 'Prestasi' : 'Umum' }}</td>
+        </tr>
+        <tr>
             <td class="label">Tanggal Pendaftaran</td>
             <td class="separator">:</td>
             <td class="value">{{ $registrant->created_at->translatedFormat('d F Y') }}</td>
@@ -263,11 +268,11 @@
                     <b>{{ $registrant->name }}</b>
                 </td>
                 <td class="signature-box">
-                    Kudus, {{ now()->translatedFormat('d F Y') }}<br>
+                    Garut, {{ now()->translatedFormat('d F Y') }}<br>
                     Ketua Panitia SPMB,
                     <br><br><br><br>
                     <b>{{ \App\Models\Setting::getValue('committee_head_name') }}</b><br>
-                    NIP. {{ \App\Models\Setting::getValue('committee_head_nip') }}
+                    NUPTK. {{ \App\Models\Setting::getValue('committee_head_nip') }}
                 </td>
             </tr>
         </table>

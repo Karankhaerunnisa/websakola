@@ -33,7 +33,7 @@
                     <x-heroicon-o-building-library class="w-8 h-8 text-blue-500" />
                     <div>
                         <h1 class="text-lg font-bold">SPMB Admin</h1>
-                        <p class="text-xs text-gray-400">SMK Rohmatul Ummah</p>
+                        <p class="text-xs text-gray-400">SMK Al-Ghifari Banyuresmi</p>
                     </div>
                 </div>
                 <button @click="sidebarOpen = false" class="md:hidden text-gray-400 hover:text-white">
@@ -69,6 +69,13 @@
                             class="flex items-center px-4 py-3 {{ request()->routeIs('admin.announcements.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
                             <x-heroicon-o-megaphone class="w-5 h-5 mr-3" />
                             Pengumuman
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.pengumuman-ujian.index') }}"
+                            class="flex items-center px-4 py-3 {{ request()->routeIs('admin.pengumuman-ujian.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+                            <x-heroicon-o-megaphone class="w-5 h-5 mr-3" />
+                            Pengumuman Seleksi SPMB
                         </a>
                     </li>
                     <li>
