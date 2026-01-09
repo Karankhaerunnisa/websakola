@@ -22,6 +22,7 @@ use App\Http\Controllers\EmployeController;
 // Storage File Serving Route (untuk hosting yang tidak support symbolic link)
 Route::get('/storage/{path}', function ($path) {
     $filePath = storage_path('app/public/' . $path);
+
     
     if (!file_exists($filePath)) {
         abort(404);
@@ -37,6 +38,7 @@ Route::get('/storage/{path}', function ($path) {
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/formulir', [HomeController::class, 'formulir'])->name('formulir');
+Route::get('/download', [HomeController::class,''])->name('');
 
 // Public Pages - Alumni, Prestasi, Ekskul, Kegiatan, Mitra
 Route::get('/alumni', [HomeController::class, 'alumni'])->name('alumni');
