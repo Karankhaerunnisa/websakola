@@ -56,6 +56,11 @@ class Registrant extends Model
         return $this->belongsTo(Major::class, 'major_id');
     }
 
+    public function major2(): BelongsTo
+    {
+        return $this->belongsTo(Major::class, 'major_id_2');
+    }
+
     public function address(): HasOne
     {
         return $this->hasOne(RegistrantAddress::class, 'registrant_id');
@@ -79,5 +84,20 @@ class Registrant extends Model
     public function examResult(): HasOne
     {
         return $this->hasOne(ExamResult::class, 'registrant_id');
+    }
+
+    public function pengumumanUjian(): HasOne
+    {
+        return $this->hasOne(Pengumumanujian::class, 'registrant_id');
+    }
+
+    public function academicAchievements(): HasMany
+    {
+        return $this->hasMany(RegistrantAcademicAchievement::class, 'registrant_id');
+    }
+
+    public function nonAcademicAchievements(): HasMany
+    {
+        return $this->hasMany(RegistrantNonAcademicAchievement::class, 'registrant_id');
     }
 }

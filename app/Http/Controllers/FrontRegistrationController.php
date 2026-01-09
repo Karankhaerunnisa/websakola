@@ -28,6 +28,7 @@ class FrontRegistrationController extends Controller
             $registrant = Registrant::create([
                 'registration_number' => $regNumber,
                 'major_id' => $request->major_id,
+                'major_id_2' => $request->jurusan2,
                 'registration_path' => $request->registration_path,
                 'name' => $request->name,
                 'email' => $request->email,
@@ -56,8 +57,14 @@ class FrontRegistrationController extends Controller
             // 4. Create Academic Record
             $avg = ($request->nilai_matematika + $request->nilai_bahasa_indonesia + $request->nilai_bahasa_inggris + $request->nilai_ipa) / 4;
 
+            // Handle "Lainnya" untuk asal sekolah
+            $schoolName = $request->asal_sekolah;
+            if ($schoolName === 'LAINNYA' && $request->asal_sekolah_lainnya) {
+                $schoolName = strtoupper($request->asal_sekolah_lainnya);
+            }
+
             $registrant->academic()->create([
-                'school_name' => $request->asal_sekolah,
+                'school_name' => $schoolName,
                 'graduation_year' => $request->tahun_lulus,
                 'math_score' => $request->nilai_matematika,
                 'indonesian_score' => $request->nilai_bahasa_indonesia,
@@ -88,6 +95,8 @@ class FrontRegistrationController extends Controller
             // 6. Upload Documents
             $documentTypes = [
                 'dokumen_kk' => 'kartu_keluarga',
+                'dokumen_ktp' => 'ktp_orangtua',
+                'dokumen_kip' => 'kip',
                 'dokumen_akta' => 'akta_kelahiran',
                 'dokumen_foto' => 'pas_foto',
                 'dokumen_ijazah' => 'ijazah_skl',
@@ -106,6 +115,36 @@ class FrontRegistrationController extends Controller
                         'file_path' => $filePath,
                         'file_name' => $file->getClientOriginalName(),
                     ]);
+                }
+            }
+
+            // 7. Save Achievement Data (Only for Jalur Prestasi)
+            if ($request->registration_path === 'prestasi') {
+                // Save Academic Achievements (Semester Rankings)
+                if ($request->has('prestasi_akademik')) {
+                    foreach ($request->prestasi_akademik as $akademik) {
+                        if (!empty($akademik['peringkat'])) {
+                            $registrant->academicAchievements()->create([
+                                'semester' => $akademik['semester'],
+                                'peringkat' => $akademik['peringkat'],
+                                'keterangan' => $akademik['keterangan'] ?? null,
+                            ]);
+                        }
+                    }
+                }
+
+                // Save Non-Academic Achievements (Competitions)
+                if ($request->has('prestasi_non_akademik')) {
+                    foreach ($request->prestasi_non_akademik as $nonAkademik) {
+                        if (!empty($nonAkademik['nama_lomba'])) {
+                            $registrant->nonAcademicAchievements()->create([
+                                'nama_lomba' => $nonAkademik['nama_lomba'],
+                                'tingkat' => $nonAkademik['tingkat'] ?? null,
+                                'peringkat' => $nonAkademik['peringkat'] ?? null,
+                                'tahun' => $nonAkademik['tahun'] ?? null,
+                            ]);
+                        }
+                    }
                 }
             }
 
@@ -218,5 +257,88 @@ class FrontRegistrationController extends Controller
                 'exam2_image' => $examResult->exam2_image ? asset('storage/exam_results/' . $examResult->exam2_image) : null,
             ] : null,
         ]);
+    }
+
+    public function uploadDocuments(\Illuminate\Http\Request $request)
+    {
+        // Validate request
+        $request->validate([
+            'registration_number' => 'required|string',
+            'birth_date' => 'required|date',
+            'documents' => 'required|array',
+            'documents.*' => 'file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ], [
+            'documents.required' => 'Silakan pilih minimal satu dokumen untuk diupload.',
+            'documents.*.file' => 'File tidak valid.',
+            'documents.*.mimes' => 'Format file harus PDF, JPG, atau PNG.',
+            'documents.*.max' => 'Ukuran file maksimal 2MB.',
+        ]);
+
+        // Find the registrant
+        $registrant = Registrant::where('registration_number', $request->registration_number)
+            ->where('birth_date', $request->birth_date)
+            ->first();
+
+        if (!$registrant) {
+            return back()->with('upload_error', 'Data pendaftar tidak ditemukan. Silakan coba lagi.');
+        }
+
+        try {
+            DB::beginTransaction();
+
+            $documentLabels = [
+                'kartu_keluarga' => 'Kartu Keluarga',
+                'ktp_orangtua' => 'KTP Orangtua',
+                'kip' => 'Kartu Indonesia Pintar (KIP)',
+                'akta_kelahiran' => 'Akta Kelahiran',
+                'pas_foto' => 'Pas Foto',
+                'ijazah_skl' => 'Ijazah / SKL',
+                'surat_dokter' => 'Surat Keterangan Sehat',
+                'sertifikat_prestasi' => 'Sertifikat Prestasi',
+            ];
+
+            $uploadedCount = 0;
+
+            foreach ($request->file('documents') as $docType => $file) {
+                // Check if this document type already exists
+                $existingDoc = $registrant->documents()->where('document_type', $docType)->first();
+                if ($existingDoc) {
+                    continue; // Skip if already uploaded
+                }
+
+                // Generate filename
+                $fileName = $registrant->registration_number . '_' . $docType . '_' . time() . '.' . $file->getClientOriginalExtension();
+                $filePath = $file->storeAs('documents/' . $registrant->registration_number, $fileName, 'public');
+
+                // Save to database
+                $registrant->documents()->create([
+                    'document_type' => $docType,
+                    'file_path' => $filePath,
+                    'file_name' => $file->getClientOriginalName(),
+                ]);
+
+                $uploadedCount++;
+            }
+
+            DB::commit();
+
+            if ($uploadedCount > 0) {
+                // Reload registrant with updated documents
+                $registrant->load(['major', 'documents']);
+                
+                // Flash success message
+                session()->flash('success', $uploadedCount . ' dokumen berhasil diupload.');
+                
+                return view('check-status', [
+                    'registrant' => $registrant,
+                ]);
+            } else {
+                return back()->with('upload_error', 'Tidak ada dokumen baru yang diupload. Semua dokumen mungkin sudah tersedia.');
+            }
+
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return back()->with('upload_error', 'Terjadi kesalahan saat mengupload dokumen: ' . $e->getMessage());
+        }
     }
 }

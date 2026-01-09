@@ -67,8 +67,8 @@
                     <li>
                         <a href="{{ route('admin.announcements.index') }}"
                             class="flex items-center px-4 py-3 {{ request()->routeIs('admin.announcements.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
-                            <x-heroicon-o-megaphone class="w-5 h-5 mr-3" />
-                            Pengumuman
+                            <x-heroicon-o-newspaper class="w-5 h-5 mr-3" />
+                            Informasi 
                         </a>
                     </li>
                     <li>
@@ -77,6 +77,51 @@
                             <x-heroicon-o-megaphone class="w-5 h-5 mr-3" />
                             Pengumuman Seleksi SPMB
                         </a>
+                    </li>
+                    
+                    <!-- Divider -->
+                    <li class="pt-4 pb-2 px-4">
+                        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Profil Sekolah</span>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.alumni.index') }}"
+                            class="flex items-center px-4 py-3 {{ request()->routeIs('admin.alumni.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+                            <x-heroicon-o-users class="w-5 h-5 mr-3" />
+                            Alumni
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.prestasi.index') }}"
+                            class="flex items-center px-4 py-3 {{ request()->routeIs('admin.prestasi.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+                            <x-heroicon-o-trophy class="w-5 h-5 mr-3" />
+                            Prestasi
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.ekskul.index') }}"
+                            class="flex items-center px-4 py-3 {{ request()->routeIs('admin.ekskul.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+                            <x-heroicon-o-academic-cap class="w-5 h-5 mr-3" />
+                            Ekstrakurikuler
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.kegiatan.index') }}"
+                            class="flex items-center px-4 py-3 {{ request()->routeIs('admin.kegiatan.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+                            <x-heroicon-o-calendar-days class="w-5 h-5 mr-3" />
+                            Kegiatan
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{{ route('admin.mitra.index') }}"
+                            class="flex items-center px-4 py-3 {{ request()->routeIs('admin.mitra.*') ? 'bg-blue-600 text-white' : 'text-gray-400 hover:bg-gray-800 hover:text-white' }}">
+                            <x-heroicon-o-building-office class="w-5 h-5 mr-3" />
+                            Mitra Kerjasama
+                        </a>
+                    </li>
+                    
+                    <!-- Divider -->
+                    <li class="pt-4 pb-2 px-4">
+                        <span class="text-xs font-semibold text-gray-500 uppercase tracking-wider">Sistem</span>
                     </li>
                     <li>
                         <a href="{{ route('admin.settings.index') }}"

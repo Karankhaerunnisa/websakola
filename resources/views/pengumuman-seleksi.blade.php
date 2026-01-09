@@ -29,12 +29,30 @@
 
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="{{ route('home') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
+                        class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
                         <x-heroicon-o-home class="w-4 h-4 mr-1" />
                         Beranda
                     </a>
-                    
-                     
+                    <a href="{{ route('formulir') }}"
+                        class="text-sm font-medium {{ request()->routeIs('formulir') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
+                        <x-heroicon-o-pencil-square class="w-4 h-4 mr-1" />
+                        Formulir
+                    </a>
+                    <a href="{{ route('registration.check-status.form') }}"
+                        class="text-sm font-medium {{ request()->routeIs('registration.check-status.form') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
+                        <x-heroicon-o-clipboard-document-check class="w-4 h-4 mr-1" />
+                        Cek Status
+                    </a>
+                    <a href="{{ route('ujian-tes') }}"
+                        class="text-sm font-medium {{ request()->routeIs('ujian-tes') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
+                        <x-heroicon-o-document-text class="w-4 h-4 mr-1" />
+                        Tes Minat & Bakat
+                    </a>
+                    <a href="{{ route('pengumuman-seleksi') }}"
+                        class="text-sm font-medium {{ request()->routeIs('pengumuman-seleksi') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
+                        <x-heroicon-o-academic-cap class="w-4 h-4 mr-1" />
+                        Pengumuman Seleksi
+                    </a>
                 </div>
 
                 <div class="-mr-2 flex items-center md:hidden">
@@ -55,20 +73,41 @@
 
             <div class="pt-2 pb-3 space-y-1 px-4">
                 <a href="{{ route('home') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('home') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-home class="w-5 h-5 mr-2" />
                         Beranda
                     </div>
                 </a>
-                <a href="{{ route('registration.check-status.form') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                <a href="{{ route('formulir') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('formulir') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
-                        <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" />
+                        <x-heroicon-o-pencil-square class="w-5 h-5 mr-2" />
+                        Formulir
+                    </div>
+                </a>
+                <a href="{{ route('registration.check-status.form') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('registration.check-status.form') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-clipboard-document-check class="w-5 h-5 mr-2" />
+                        Cek Status
+                    </div>
+                </a>
+                <a href="{{ route('ujian-tes') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('ujian-tes') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-document-text class="w-5 h-5 mr-2" />
+                        Tes Minat & Bakat
+                    </div>
+                </a>
+                <a href="{{ route('pengumuman-seleksi') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('pengumuman-seleksi') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-academic-cap class="w-5 h-5 mr-2" />
                         Pengumuman Seleksi
                     </div>
                 </a>
-                           </div>
+            </div>
         </div>
     </nav>
 
@@ -198,6 +237,15 @@
                             <x-heroicon-o-information-circle class="w-4 h-4 inline mr-1" />
                             Segera lakukan daftar ulang sesuai jadwal yang telah ditentukan.
                         </p>
+                    </div>
+
+                    {{-- Tombol Cetak Surat Kelulusan --}}
+                    <div class="mt-4">
+                        <a href="{{ route('pengumuman-seleksi.cetak', $result['pengumuman']->id) }}" target="_blank"
+                            class="w-full flex items-center justify-center bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition shadow-md">
+                            <x-heroicon-o-printer class="w-5 h-5 mr-2" />
+                            Cetak Surat Kelulusan
+                        </a>
                     </div>
                 </div>
             </div>

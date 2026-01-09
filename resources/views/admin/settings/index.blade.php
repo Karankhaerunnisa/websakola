@@ -85,6 +85,25 @@
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
                     </div>
                 </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">No. WhatsApp PPDB</label>
+                        <input type="text" name="school_whatsapp"
+                            value="{{ old('school_whatsapp', $settings['school_whatsapp'] ?? '') }}"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                            placeholder="6281234567890 (format internasional tanpa +)">
+                        <p class="text-xs text-gray-500 mt-1">Contoh: 6281234567890</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Link Linktree</label>
+                        <input type="url" name="linktree_url"
+                            value="{{ old('linktree_url', $settings['linktree_url'] ?? '') }}"
+                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                            placeholder="https://linktr.ee/namasekolah">
+                        <p class="text-xs text-gray-500 mt-1">Akan ditampilkan di tombol sosial media</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -150,7 +169,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Link Tes Multiple Intelligence</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Link Tes Jurusan</label>
                     <input type="url" name="exam_link_1"
                         value="{{ old('exam_link_1', $settings['exam_link_1'] ?? '') }}"
                         class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
@@ -158,7 +177,7 @@
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Link Tes Pilihan Jurusan</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Link Tes Multiple Intelligence</label>
                     <input type="url" name="exam_link_2"
                         value="{{ old('exam_link_2', $settings['exam_link_2'] ?? '') }}"
                         class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
@@ -168,8 +187,61 @@
             </div>
 
             <h3 class="text-lg font-bold text-gray-800  mt-5 mb-4 flex items-center border-b pb-2">
+                <x-heroicon-o-academic-cap class="w-5 h-5 mr-2 text-blue-600" />
+                Data Kepala Sekolah
+            </h3>
+
+            <div class="space-y-4">
+
+                <div class="bg-blue-50 border border-blue-100 rounded-md p-3 mb-4">
+                    <p class="text-xs text-blue-700">
+                        <x-heroicon-o-information-circle class="w-4 h-4 inline mr-1" />
+                        Data ini akan ditampilkan pada kolom tanda tangan Kepala Sekolah di dokumen resmi.
+                    </p>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Nama Kepala Sekolah</label>
+                    <input type="text" name="principal_name"
+                        value="{{ old('principal_name', $settings['principal_name'] ?? '') }}"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                        placeholder="Contoh: H. Ahmad Fauzi, S.Pd., M.M.">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">NIP Kepala Sekolah</label>
+                    <input type="text" name="principal_nip"
+                        value="{{ old('principal_nip', $settings['principal_nip'] ?? '') }}"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
+                        placeholder="Contoh: 19700101 199801 1 001 (kosongkan jika tidak ada)">
+                </div>
+
+                {{-- TTD Kepala Sekolah --}}
+                <div class="flex items-start gap-4 mt-4 bg-green-50 p-4 rounded-lg">
+                    <div
+                        class="w-24 h-16 bg-white border border-gray-200 flex items-center justify-center overflow-hidden shrink-0 rounded">
+                        @if(isset($settings['ttd_kepala_sekolah']) && $settings['ttd_kepala_sekolah'])
+                        <img src="{{ asset('images/' . $settings['ttd_kepala_sekolah']) }}" alt="TTD Kepsek"
+                            class="w-full h-full object-contain">
+                        @else
+                        <span class="text-xs text-gray-400">Belum ada</span>
+                        @endif
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700">Tanda Tangan Digital Kepala Sekolah</label>
+                        <p class="text-xs text-gray-500 mb-2">
+                            Gambar tanda tangan Kepala Sekolah untuk dokumen resmi (PNG transparan disarankan).
+                        </p>
+                        <input type="file" name="ttd_kepala_sekolah"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700 transition cursor-pointer" />
+                    </div>
+                </div>
+
+            </div>
+
+            <h3 class="text-lg font-bold text-gray-800 mt-5 mb-4 flex items-center border-b pb-2">
                 <x-heroicon-o-users class="w-5 h-5 mr-2 text-blue-600" />
-                Data Panitia
+                Data Panitia PPDB
             </h3>
 
             <div class="space-y-4">
@@ -195,6 +267,27 @@
                         value="{{ old('committee_head_nip', $settings['committee_head_nip'] ?? '') }}"
                         class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm"
                         placeholder="Contoh: 19800101 200501 1 001">
+                </div>
+
+                {{-- TTD Panitia --}}
+                <div class="flex items-start gap-4 mt-4 bg-green-50 p-4 rounded-lg">
+                    <div
+                        class="w-24 h-16 bg-white border border-gray-200 flex items-center justify-center overflow-hidden shrink-0 rounded">
+                        @if(isset($settings['ttd_panitia']) && $settings['ttd_panitia'])
+                        <img src="{{ asset('images/' . $settings['ttd_panitia']) }}" alt="TTD"
+                            class="w-full h-full object-contain">
+                        @else
+                        <span class="text-xs text-gray-400">Belum ada</span>
+                        @endif
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700">Tanda Tangan Digital Panitia</label>
+                        <p class="text-xs text-gray-500 mb-2">
+                            Gambar tanda tangan Ketua Panitia untuk Bukti Pendaftaran (PNG transparan disarankan).
+                        </p>
+                        <input type="file" name="ttd_panitia"
+                            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-green-600 file:text-white hover:file:bg-green-700 transition cursor-pointer" />
+                    </div>
                 </div>
 
             </div>

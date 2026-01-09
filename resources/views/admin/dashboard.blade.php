@@ -57,7 +57,7 @@
         <x-heroicon-o-user-group class="w-5 h-5 mr-2" />
         Lihat Semua Pendaftar
     </a>
-    <a href="{{ route('admin.announcements.index') }}"
+    <a href="{{ route('admin.pengumuman-ujian.index') }}"
         class="flex items-center bg-white hover:bg-gray-50 text-blue-600 border border-blue-200 px-5 py-2.5 rounded-full font-medium shadow-sm transition-colors">
         <x-heroicon-o-megaphone class="w-5 h-5 mr-2" />
         Kelola Pengumuman

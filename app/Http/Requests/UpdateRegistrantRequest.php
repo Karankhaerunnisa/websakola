@@ -25,6 +25,8 @@ class UpdateRegistrantRequest extends FormRequest
     {
         return [
             'status' => ['required', Rule::enum(RegistrantStatus::class)],
+            'major_id' => ['required', 'exists:majors,id'],
+            'major_id_2' => ['nullable', 'exists:majors,id', 'different:major_id'],
             'admin_note' => ['nullable', 'string']
         ];
     }

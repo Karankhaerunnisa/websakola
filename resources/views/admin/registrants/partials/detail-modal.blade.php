@@ -17,14 +17,17 @@
             <div class="text-gray-500">Jenis Kelamin</div>
             <div class="font-medium text-gray-800">{{ $registrant->gender->label() }}</div>
 
-            <div class="text-gray-500">Jurusan</div>
+            <div class="text-gray-500">Jurusan 1</div>
             <div class="font-medium text-gray-800">{{ $registrant->major->name }}</div>
+
+            <div class="text-gray-500">Jurusan 2</div>
+            <div class="font-medium text-gray-800">{{ $registrant->major2?->name ?? '-' }}</div>
 
             <div class="text-gray-500">Asal Sekolah</div>
             <div class="font-medium text-gray-800">{{ $registrant->academic->school_name ?? '-' }}</div>
 
-            <div class="text-gray-500">Rata-rata Nilai</div>
-            <div class="font-medium text-gray-800">{{ $registrant->academic->average_score ?? '0' }}</div>
+            <!--<div class="text-gray-500">Rata-rata Nilai</div>
+            <div class="font-medium text-gray-800">{{ $registrant->academic->average_score ?? '0' }}</div>-->
 
             <div class="text-gray-500">Alamat</div>
             <div class="font-medium text-gray-800 col-span-2">{{ $registrant->address?->full_address ?? '-' }}</div>
@@ -64,9 +67,13 @@
                 @php
                     $docLabels = [
                         'kartu_keluarga' => 'Kartu Keluarga',
+                        'ktp_orangtua' => 'KTP Orangtua',
+                        'kip' => 'Kartu Indonesia Pintar (KIP)',
                         'akta_kelahiran' => 'Akta Kelahiran',
                         'pas_foto' => 'Pas Foto',
                         'ijazah_skl' => 'Ijazah/SKL',
+                        'surat_dokter' => 'Surat Keterangan Sehat',
+                        'sertifikat_prestasi' => 'Sertifikat Prestasi',
                     ];
                     $isPdf = str_ends_with(strtolower($document->file_path), '.pdf');
                 @endphp
@@ -176,6 +183,102 @@
             </div>
         </div>
         @endif
+
+        {{-- Section Data Prestasi (Jalur Prestasi) --}}
+        @if($registrant->registration_path === 'prestasi')
+        <div class="mt-4 pt-4 border-t">
+            <h4 class="font-bold text-sm text-gray-800 mb-3 flex items-center">
+                <x-heroicon-o-trophy class="w-4 h-4 mr-2 text-amber-500" />
+                Data Prestasi (Jalur Prestasi)
+                <span class="ml-2 px-2 py-0.5 text-xs bg-amber-100 text-amber-700 rounded-full">Jalur Prestasi</span>
+            </h4>
+            
+            {{-- Prestasi Akademik (Peringkat Semester) --}}
+            @if($registrant->academicAchievements && $registrant->academicAchievements->count() > 0)
+            <div class="mb-4">
+                <h5 class="text-xs font-bold text-gray-600 uppercase mb-2 flex items-center">
+                    <x-heroicon-o-academic-cap class="w-3 h-3 mr-1 text-blue-500" />
+                    Prestasi Akademik (Peringkat Kelas)
+                </h5>
+                <div class="bg-blue-50 rounded-lg border border-blue-200 overflow-hidden">
+                    <table class="w-full text-xs">
+                        <thead class="bg-blue-100">
+                            <tr>
+                                <th class="px-3 py-2 text-left font-semibold text-blue-800">Semester</th>
+                                <th class="px-3 py-2 text-left font-semibold text-blue-800">Peringkat</th>
+                                <th class="px-3 py-2 text-left font-semibold text-blue-800">Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-blue-100">
+                            @foreach($registrant->academicAchievements as $achievement)
+                            <tr>
+                                <td class="px-3 py-2 text-gray-700">Semester {{ $achievement->semester }}</td>
+                                <td class="px-3 py-2 font-bold text-blue-700">Peringkat {{ $achievement->peringkat }}</td>
+                                <td class="px-3 py-2 text-gray-600">{{ $achievement->keterangan ?? '-' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
+            {{-- Prestasi Non-Akademik (Lomba/Kejuaraan) --}}
+            @if($registrant->nonAcademicAchievements && $registrant->nonAcademicAchievements->count() > 0)
+            <div>
+                <h5 class="text-xs font-bold text-gray-600 uppercase mb-2 flex items-center">
+                    <x-heroicon-o-star class="w-3 h-3 mr-1 text-yellow-500" />
+                    Prestasi Non-Akademik (Lomba/Kejuaraan)
+                </h5>
+                <div class="bg-amber-50 rounded-lg border border-amber-200 overflow-hidden">
+                    <table class="w-full text-xs">
+                        <thead class="bg-amber-100">
+                            <tr>
+                                <th class="px-3 py-2 text-left font-semibold text-amber-800">Nama Lomba</th>
+                                <th class="px-3 py-2 text-left font-semibold text-amber-800">Tingkat</th>
+                                <th class="px-3 py-2 text-left font-semibold text-amber-800">Juara</th>
+                                <th class="px-3 py-2 text-left font-semibold text-amber-800">Tahun</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-amber-100">
+                            @foreach($registrant->nonAcademicAchievements as $achievement)
+                            @php
+                                $tingkatLabels = [
+                                    'sekolah' => 'Sekolah',
+                                    'kecamatan' => 'Kecamatan',
+                                    'kabupaten' => 'Kabupaten/Kota',
+                                    'provinsi' => 'Provinsi',
+                                    'nasional' => 'Nasional',
+                                    'internasional' => 'Internasional',
+                                ];
+                                $peringkatLabels = [
+                                    'juara_1' => 'Juara 1',
+                                    'juara_2' => 'Juara 2',
+                                    'juara_3' => 'Juara 3',
+                                    'harapan_1' => 'Harapan 1',
+                                    'harapan_2' => 'Harapan 2',
+                                    'harapan_3' => 'Harapan 3',
+                                    'peserta' => 'Peserta',
+                                ];
+                            @endphp
+                            <tr>
+                                <td class="px-3 py-2 font-medium text-gray-800">{{ $achievement->nama_lomba }}</td>
+                                <td class="px-3 py-2 text-gray-600">{{ $tingkatLabels[$achievement->tingkat] ?? $achievement->tingkat }}</td>
+                                <td class="px-3 py-2 font-bold text-amber-700">{{ $peringkatLabels[$achievement->peringkat] ?? $achievement->peringkat }}</td>
+                                <td class="px-3 py-2 text-gray-600">{{ $achievement->tahun ?? '-' }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            @endif
+
+            @if((!$registrant->academicAchievements || $registrant->academicAchievements->count() == 0) && (!$registrant->nonAcademicAchievements || $registrant->nonAcademicAchievements->count() == 0))
+            <p class="text-sm text-gray-400 italic">Tidak ada data prestasi yang diinput.</p>
+            @endif
+        </div>
+        @endif
     </div>
 
     <div class="w-full lg:w-1/3 bg-gray-50 p-4 rounded-lg border border-gray-200">
@@ -187,6 +290,31 @@
         <form action="{{ route('admin.registrants.update', $registrant->registration_number) }}" method="POST">
             @csrf
             @method('PUT')
+
+            <div class="mb-4">
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Pilihan Jurusan 1</label>
+                <select name="major_id"
+                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                    @foreach($majors as $major)
+                    <option value="{{ $major->id }}" {{ $registrant->major_id === $major->id ? 'selected' : '' }}>
+                        {{ $major->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <!--<div class="mb-4">
+                <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Pilihan Jurusan 2</label>
+                <select name="major_id_2"
+                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                    <option value="">-- Tidak Ada --</option>
+                    @foreach($majors as $major)
+                    <option value="{{ $major->id }}" {{ $registrant->major_id_2 === $major->id ? 'selected' : '' }}>
+                        {{ $major->name }}
+                    </option>
+                    @endforeach
+                </select>
+            </div>-->
 
             <div class="mb-4">
                 <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Status Pendaftaran</label>

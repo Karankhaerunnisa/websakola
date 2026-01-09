@@ -29,12 +29,27 @@
 
                 <div class="hidden md:flex items-center space-x-4">
                     <a href="{{ route('home') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
+                        class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
                         <x-heroicon-o-home class="w-4 h-4 mr-1" />
                         Beranda
                     </a>
+                    <a href="{{ route('formulir') }}"
+                        class="text-sm font-medium {{ request()->routeIs('formulir') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
+                        <x-heroicon-o-pencil-square class="w-4 h-4 mr-1" />
+                        Formulir
+                    </a>
+                    <a href="{{ route('registration.check-status.form') }}"
+                        class="text-sm font-medium {{ request()->routeIs('registration.check-status.form') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
+                        <x-heroicon-o-clipboard-document-check class="w-4 h-4 mr-1" />
+                        Cek Status
+                    </a>
+                    <a href="{{ route('ujian-tes') }}"
+                        class="text-sm font-medium {{ request()->routeIs('ujian-tes') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
+                        <x-heroicon-o-document-text class="w-4 h-4 mr-1" />
+                        Tes Minat & Bakat
+                    </a>
                     <a href="{{ route('pengumuman-seleksi') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
+                        class="text-sm font-medium {{ request()->routeIs('pengumuman-seleksi') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition">
                         <x-heroicon-o-academic-cap class="w-4 h-4 mr-1" />
                         Pengumuman Seleksi
                     </a>
@@ -58,14 +73,35 @@
 
             <div class="pt-2 pb-3 space-y-1 px-4">
                 <a href="{{ route('home') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('home') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-home class="w-5 h-5 mr-2" />
                         Beranda
                     </div>
                 </a>
+                <a href="{{ route('formulir') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('formulir') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-pencil-square class="w-5 h-5 mr-2" />
+                        Formulir
+                    </div>
+                </a>
+                <a href="{{ route('registration.check-status.form') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('registration.check-status.form') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-clipboard-document-check class="w-5 h-5 mr-2" />
+                        Cek Status
+                    </div>
+                </a>
+                <a href="{{ route('ujian-tes') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('ujian-tes') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-document-text class="w-5 h-5 mr-2" />
+                        Tes Minat & Bakat
+                    </div>
+                </a>
                 <a href="{{ route('pengumuman-seleksi') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('pengumuman-seleksi') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-academic-cap class="w-5 h-5 mr-2" />
                         Pengumuman Seleksi
@@ -100,7 +136,7 @@
                     <p class="text-sm text-gray-600 mb-4">Klik link di bawah ini untuk mengikuti ujian seleksi:</p>
                     
                     <div class="space-y-3">
-                        <a href="{{ \App\Models\Setting::getValue('exam_link_1', 'https://www.arealme.com/what-should-i-major-in/id/') }}" target="_blank"
+                        <a href="{{ \App\Models\Setting::getValue('exam_link_1', '') }}" target="_blank"
                             class="flex items-center justify-between p-4 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100 transition group">
                             <div class="flex items-center">
                                 <div class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center mr-3">
@@ -114,7 +150,7 @@
                             <x-heroicon-o-arrow-top-right-on-square class="w-5 h-5 text-blue-600 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                         </a>
 
-                        <a href="{{ \App\Models\Setting::getValue('exam_link_2', 'https://www.arealme.com/talent-compass-quiz/en/') }}" target="_blank"
+                        <a href="{{ \App\Models\Setting::getValue('exam_link_2', '') }}" target="_blank"
                             class="flex items-center justify-between p-4 bg-purple-50 border border-purple-200 rounded-lg hover:bg-purple-100 transition group">
                             <div class="flex items-center">
                                 <div class="w-10 h-10 bg-purple-600 rounded-full flex items-center justify-center mr-3">
@@ -268,50 +304,160 @@
                             </button>
                         </form>
                     @else
-                        {{-- Default Form Upload (no query) --}}
-                        <form action="{{ route('ujian-tes.upload') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
-                            @csrf
+                        {{-- Default Form Upload (no query) with AJAX validation --}}
+                        <div x-data="{
+                            registrationNumber: '{{ old('registration_number', '') }}',
+                            isLoading: false,
+                            registrantData: null,
+                            errorMessage: '',
+                            alreadyUploaded: false,
+                            
+                            async checkRegistrant() {
+                                if (this.registrationNumber.length < 5) {
+                                    this.registrantData = null;
+                                    this.errorMessage = '';
+                                    this.alreadyUploaded = false;
+                                    return;
+                                }
+                                
+                                this.isLoading = true;
+                                this.errorMessage = '';
+                                
+                                try {
+                                    const response = await fetch('{{ route('api.check-registrant') }}', {
+                                        method: 'POST',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                                        },
+                                        body: JSON.stringify({
+                                            registration_number: this.registrationNumber.toUpperCase()
+                                        })
+                                    });
+                                    
+                                    const data = await response.json();
+                                    
+                                    if (data.found) {
+                                        this.registrantData = data.data;
+                                        this.alreadyUploaded = data.data.already_uploaded;
+                                        this.errorMessage = '';
+                                    } else {
+                                        this.registrantData = null;
+                                        this.alreadyUploaded = false;
+                                        this.errorMessage = data.message || 'Nomor pendaftaran tidak ditemukan.';
+                                    }
+                                } catch (error) {
+                                    this.registrantData = null;
+                                    this.errorMessage = 'Terjadi kesalahan. Silakan coba lagi.';
+                                } finally {
+                                    this.isLoading = false;
+                                }
+                            }
+                        }">
+                            <form action="{{ route('ujian-tes.upload') }}" method="POST" enctype="multipart/form-data" class="space-y-4">
+                                @csrf
 
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Pendaftaran <span class="text-red-500">*</span></label>
-                                <input type="text" name="registration_number" value="{{ old('registration_number') }}"
-                                    required placeholder="Contoh: PPDB2025XXXXX"
-                                    class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 uppercase">
-                            </div>
-
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <x-heroicon-o-photo class="w-4 h-4 inline mr-1" />
-                                        Screenshot Hasil Ujian 1 <span class="text-red-500">*</span>
-                                    </label>
-                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-green-400 transition bg-gray-50">
-                                        <input type="file" name="exam1_image" accept=".jpg,.jpeg,.png" required
-                                            class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
-                                        <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG. Maks: 1MB</p>
+                                    <label class="block text-sm font-medium text-gray-700 mb-1">Nomor Pendaftaran <span class="text-red-500">*</span></label>
+                                    <div class="relative">
+                                        <input type="text" name="registration_number" 
+                                            x-model="registrationNumber"
+                                            @input.debounce.500ms="checkRegistrant()"
+                                            required placeholder="Contoh: PPDB2025XXXXX"
+                                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-green-500 focus:ring-green-500 uppercase pr-10">
+                                        <div x-show="isLoading" class="absolute right-3 top-1/2 -translate-y-1/2">
+                                            <svg class="animate-spin h-5 w-5 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                            </svg>
+                                        </div>
+                                        <div x-show="registrantData && !isLoading" class="absolute right-3 top-1/2 -translate-y-1/2">
+                                            <x-heroicon-o-check-circle class="w-5 h-5 text-green-600" />
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-2">
-                                        <x-heroicon-o-photo class="w-4 h-4 inline mr-1" />
-                                        Screenshot Hasil Ujian 2 <span class="text-red-500">*</span>
-                                    </label>
-                                    <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-green-400 transition bg-gray-50">
-                                        <input type="file" name="exam2_image" accept=".jpg,.jpeg,.png" required
-                                            class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
-                                        <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG. Maks: 1MB</p>
+                                {{-- Registrant Info Card --}}
+                                <div x-show="registrantData" x-transition class="bg-green-50 border border-green-200 rounded-lg p-4">
+                                    <div class="flex items-start">
+                                        <div class="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center mr-3 flex-shrink-0">
+                                            <x-heroicon-o-user class="w-5 h-5 text-white" />
+                                        </div>
+                                        <div class="flex-1">
+                                            <p class="font-bold text-green-800" x-text="registrantData?.name"></p>
+                                            <p class="text-sm text-green-600">
+                                                NISN: <span x-text="registrantData?.nisn"></span> • 
+                                                Jurusan: <span x-text="registrantData?.major"></span>
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
+                                {{-- Error Message --}}
+                                <div x-show="errorMessage" x-transition class="bg-red-50 border border-red-200 rounded-lg p-4">
+                                    <div class="flex items-center">
+                                        <x-heroicon-o-x-circle class="w-5 h-5 text-red-600 mr-2" />
+                                        <p class="text-sm text-red-700" x-text="errorMessage"></p>
+                                    </div>
+                                </div>
 
-                            <button type="submit"
-                                class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3 rounded-md hover:from-green-700 hover:to-emerald-700 transition shadow-md flex items-center justify-center">
-                                <x-heroicon-o-cloud-arrow-up class="w-5 h-5 mr-2" />
-                                Upload Hasil Ujian
-                            </button>
-                        </form>
+                                {{-- Already Uploaded Warning --}}
+                                <div x-show="alreadyUploaded" x-transition class="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                                    <div class="flex items-center">
+                                        <x-heroicon-o-exclamation-triangle class="w-5 h-5 text-amber-600 mr-2 flex-shrink-0" />
+                                        <p class="text-sm text-amber-700">Peserta ini sudah mengupload hasil tes sebelumnya. Upload tidak dapat dilakukan ulang.</p>
+                                    </div>
+                                </div>
+
+                                {{-- Upload Fields - Only show if registrant found and not already uploaded --}}
+                                <div x-show="registrantData && !alreadyUploaded" x-transition class="space-y-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                                <x-heroicon-o-photo class="w-4 h-4 inline mr-1" />
+                                                Screenshot Hasil Tes Jurusan <span class="text-red-500">*</span>
+                                            </label>
+                                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-green-400 transition bg-gray-50">
+                                                <input type="file" name="exam1_image" accept=".jpg,.jpeg,.png"
+                                                    :required="registrantData && !alreadyUploaded"
+                                                    class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                                                <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG. Maks: 1MB</p>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                                <x-heroicon-o-photo class="w-4 h-4 inline mr-1" />
+                                                Screenshot Hasil Tes Multiple Intelligences <span class="text-red-500">*</span>
+                                            </label>
+                                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-green-400 transition bg-gray-50">
+                                                <input type="file" name="exam2_image" accept=".jpg,.jpeg,.png"
+                                                    :required="registrantData && !alreadyUploaded"
+                                                    class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+                                                <p class="text-xs text-gray-400 mt-1">Format: JPG, PNG. Maks: 1MB</p>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="bg-amber-50 border border-amber-200 rounded-lg p-3 text-sm text-amber-700">
+                                        <x-heroicon-o-exclamation-triangle class="w-4 h-4 inline mr-1" />
+                                        <strong>Perhatian:</strong> Upload hanya dapat dilakukan sekali dan tidak dapat diubah.
+                                    </div>
+
+                                    <button type="submit"
+                                        class="w-full bg-gradient-to-r from-green-600 to-emerald-600 text-white font-bold py-3 rounded-md hover:from-green-700 hover:to-emerald-700 transition shadow-md flex items-center justify-center">
+                                        <x-heroicon-o-cloud-arrow-up class="w-5 h-5 mr-2" />
+                                        Upload Hasil Ujian
+                                    </button>
+                                </div>
+
+                                {{-- Prompt to enter registration number --}}
+                                <div x-show="!registrantData && !errorMessage && !isLoading" class="text-center py-4 text-gray-500">
+                                    <x-heroicon-o-document-magnifying-glass class="w-12 h-12 mx-auto mb-2 text-gray-300" />
+                                    <p class="text-sm">Masukkan nomor pendaftaran untuk melanjutkan upload hasil tes.</p>
+                                </div>
+                            </form>
+                        </div>
                     @endif
                 </div>
             </div>

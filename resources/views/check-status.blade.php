@@ -10,44 +10,62 @@
 
 <body class="bg-gray-50 font-sans antialiased min-h-screen flex flex-col">
 
+    
+    {{-- Navigation --}}
     <nav x-data="{ open: false }" class="bg-white shadow-sm sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
+            <div class="flex justify-between h-16">
 
                 <div class="flex items-center gap-3">
-                    <img src="{{ asset('images/' . \App\Models\Setting::getValue('app_logo', 'default.png')) }}"
-                        class="h-10 w-auto" alt="Logo">
-                    <div>
-                        <div class="font-bold text-blue-900 leading-tight">
-                            {{ \App\Models\Setting::getValue('school_name') }}
+                    <a href="{{ route('home') }}" class="flex items-center gap-3">
+                        <img src="{{ asset('images/' . \App\Models\Setting::getValue('app_logo', 'default.png')) }}"
+                            class="h-10 w-auto" alt="Logo">
+                        <div>
+                            <div class="font-bold text-blue-900 leading-tight">
+                                {{ \App\Models\Setting::getValue('school_name') }}
+                            </div>
+                            <div class="text-xs text-gray-500">
+                                SPMB Online {{ \App\Models\Setting::getValue('academic_year') }}
+                            </div>
                         </div>
-                        <div class="text-xs text-gray-500">
-                            SPMB Online {{ \App\Models\Setting::getValue('academic_year') }}
-                        </div>
-                    </div>
+                    </a>
                 </div>
-                <div class="hidden md:flex items-center space-x-4">
+
+                <div class="hidden md:flex items-center space-x-4 relative z-10">
                     <a href="{{ route('home') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
+                        class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
                         <x-heroicon-o-home class="w-4 h-4 mr-1" />
                         Beranda
                     </a>
+                    <a href="{{ route('formulir') }}"
+                        class="text-sm font-medium {{ request()->routeIs('formulir') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
+                        <x-heroicon-o-pencil-square class="w-4 h-4 mr-1" />
+                        Formulir
+                    </a>
+                    <a href="{{ route('registration.check-status.form') }}"
+                        class="text-sm font-medium {{ request()->routeIs('registration.check-status.form') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
+                        <x-heroicon-o-clipboard-document-check class="w-4 h-4 mr-1" />
+                        Cek Status
+                    </a>
                     <a href="{{ route('ujian-tes') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
+                        class="text-sm font-medium {{ request()->routeIs('ujian-tes') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
                         <x-heroicon-o-document-text class="w-4 h-4 mr-1" />
                         Tes Minat & Bakat
                     </a>
                     <a href="{{ route('pengumuman-seleksi') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition">
+                        class="text-sm font-medium {{ request()->routeIs('pengumuman-seleksi') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
                         <x-heroicon-o-academic-cap class="w-4 h-4 mr-1" />
                         Pengumuman Seleksi
                     </a>
+                    
                 </div>
 
                 <div class="-mr-2 flex items-center md:hidden">
                     <button @click="open = !open"
-                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
+                        class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+
                         <x-heroicon-o-bars-3 class="h-6 w-6" x-show="!open" />
+
                         <x-heroicon-o-x-mark class="h-6 w-6" x-show="open" style="display: none;" />
                     </button>
                 </div>
@@ -62,26 +80,41 @@
 
             <div class="pt-2 pb-3 space-y-1 px-4">
                 <a href="{{ route('home') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('home') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-home class="w-5 h-5 mr-2" />
                         Beranda
                     </div>
                 </a>
+                <a href="{{ route('formulir') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('formulir') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-pencil-square class="w-5 h-5 mr-2" />
+                        Formulir
+                    </div>
+                </a>
+                <a href="{{ route('registration.check-status.form') }}"
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('registration.check-status.form') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
+                    <div class="flex items-center">
+                        <x-heroicon-o-clipboard-document-check class="w-5 h-5 mr-2" />
+                        Cek Status
+                    </div>
+                </a>
                 <a href="{{ route('ujian-tes') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('ujian-tes') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-document-text class="w-5 h-5 mr-2" />
                         Tes Minat & Bakat
                     </div>
                 </a>
                 <a href="{{ route('pengumuman-seleksi') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('pengumuman-seleksi') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-academic-cap class="w-5 h-5 mr-2" />
                         Pengumuman Seleksi
                     </div>
                 </a>
+                
             </div>
         </div>
     </nav>
@@ -163,6 +196,186 @@
                         </form>
                     </div>
                 </div>
+
+                {{-- Result Section (for Kelengkapan Persyaratan) - Inside Tab --}}
+                @if(isset($registrant))
+                <div class="mt-6 bg-white rounded-xl shadow-lg border border-blue-100 overflow-hidden animate-fade-in-up">
+                    <div class="p-6 text-center border-b border-gray-100">
+                        <div class="mb-2">
+                            <span class="px-4 py-1.5 rounded-full text-sm font-bold bg-{{ $registrant->status->color() }}-100 text-{{ $registrant->status->color() }}-700">
+                                {{ $registrant->status->label() }}
+                            </span>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">{{ $registrant->name }}</h3>
+                        <p class="text-gray-500 text-sm">{{ $registrant->registration_number }}</p>
+                    </div>
+
+                    <div class="p-6 bg-gray-50 space-y-3 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Jurusan Pilihan 1</span>
+                            <span class="font-medium text-gray-900">{{ $registrant->major->name }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Jurusan Pilihan 2</span>
+                            <span class="font-medium text-gray-900">{{ $registrant->major2?->name ?? '-' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Jalur Pendaftaran</span>
+                            <span class="font-medium">
+                                @if($registrant->registration_path == 'umum' || $registrant->registration_path == '1' || $registrant->registration_path == null)
+                                    <span class="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs">Jalur Umum</span>
+                                @else
+                                    <span class="px-2 py-0.5 bg-amber-100 text-amber-700 rounded-full text-xs">Jalur Prestasi</span>
+                                @endif
+                            </span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-500">Tanggal Daftar</span>
+                            <span class="font-medium text-gray-900">{{ $registrant->created_at->format('d M Y') }}</span>
+                        </div>
+
+                        @if($registrant->admin_note)
+                        <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-left">
+                            <span class="block text-xs font-bold text-yellow-700 uppercase mb-1">Catatan Panitia:</span>
+                            <p class="text-gray-700">{{ $registrant->admin_note }}</p>
+                        </div>
+                        @endif
+                    </div>
+
+                    {{-- Kelengkapan Persyaratan --}}
+                    <div class="p-6 border-t border-gray-100">
+                        <h4 class="text-sm font-bold text-gray-800 mb-3 flex items-center">
+                            <x-heroicon-o-clipboard-document-check class="w-4 h-4 mr-1" />
+                            Kelengkapan Persyaratan
+                        </h4>
+                        @php
+                            // Dokumen wajib untuk semua jalur
+                            $requiredDocs = [
+                                'kartu_keluarga' => 'Kartu Keluarga (KK)',
+                                'ktp_orangtua' => 'KTP Orangtua',
+                                'kip' => 'Kartu Indonesia Pintar (KIP)',
+                                'akta_kelahiran' => 'Akta Kelahiran',
+                                'pas_foto' => 'Pas Foto',
+                                'ijazah_skl' => 'Ijazah / SKL',
+                                'surat_dokter' => 'Surat Keterangan Sehat',
+                            ];
+                            
+                            // Cek apakah peserta memilih jalur prestasi
+                            $isPrestasiPath = !($registrant->registration_path == 'umum' || $registrant->registration_path == '1' || $registrant->registration_path == null);
+                            
+                            // Tambahkan sertifikat prestasi hanya untuk jalur prestasi
+                            if ($isPrestasiPath) {
+                                $requiredDocs['sertifikat_prestasi'] = 'Prestasi / Piagam';
+                            }
+                            
+                            $uploadedDocs = $registrant->documents->pluck('document_type')->toArray();
+                            $missingDocs = array_diff(array_keys($requiredDocs), $uploadedDocs);
+                        @endphp
+
+                        {{-- Success Message --}}
+                        @if(session('success'))
+                        <div class="bg-green-50 text-green-600 text-sm p-3 rounded-md mb-4 flex items-center">
+                            <x-heroicon-o-check-circle class="w-5 h-5 mr-2" />
+                            {{ session('success') }}
+                        </div>
+                        @endif
+
+                        {{-- Error Message --}}
+                        @if(session('upload_error'))
+                        <div class="bg-red-50 text-red-600 text-sm p-3 rounded-md mb-4 flex items-center">
+                            <x-heroicon-o-exclamation-circle class="w-5 h-5 mr-2" />
+                            {{ session('upload_error') }}
+                        </div>
+                        @endif
+                        
+                        <form action="{{ route('registration.upload-documents') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="hidden" name="registration_number" value="{{ $registrant->registration_number }}">
+                            <input type="hidden" name="birth_date" value="{{ $registrant->birth_date->format('Y-m-d') }}">
+                            
+                            <div class="space-y-3">
+                                @foreach($requiredDocs as $type => $label)
+                                <div class="rounded-lg border {{ in_array($type, $uploadedDocs) ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50' }} p-3">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm font-medium {{ in_array($type, $uploadedDocs) ? 'text-green-800' : 'text-red-800' }}">
+                                            {{ $label }}
+                                        </span>
+                                        @if(in_array($type, $uploadedDocs))
+                                            @php
+                                                $doc = $registrant->documents->where('document_type', $type)->first();
+                                            @endphp
+                                            <div class="flex items-center gap-2">
+                                                <a href="{{ asset('storage/' . $doc->file_path) }}" target="_blank" 
+                                                   class="text-xs px-2 py-1 bg-green-100 text-green-700 rounded hover:bg-green-200 transition">
+                                                    <x-heroicon-o-eye class="w-3 h-3 inline" /> Lihat
+                                                </a>
+                                                <span class="flex items-center text-green-600 text-xs">
+                                                    <x-heroicon-o-check-circle class="w-4 h-4 mr-1" />
+                                                    Lengkap
+                                                </span>
+                                            </div>
+                                        @else
+                                            <span class="flex items-center text-red-600 text-xs">
+                                                <x-heroicon-o-x-circle class="w-4 h-4 mr-1" />
+                                                Belum Upload
+                                            </span>
+                                        @endif
+                                    </div>
+                                    
+                                    {{-- Upload Field for missing documents --}}
+                                    @if(!in_array($type, $uploadedDocs))
+                                    <div class="mt-3">
+                                        <label class="block">
+                                            <span class="sr-only">Pilih file untuk {{ $label }}</span>
+                                            <input type="file" name="documents[{{ $type }}]" accept=".pdf,.jpg,.jpeg,.png"
+                                                class="block w-full text-sm text-gray-500
+                                                file:mr-4 file:py-2 file:px-4
+                                                file:rounded-md file:border-0
+                                                file:text-sm file:font-semibold
+                                                file:bg-blue-50 file:text-blue-700
+                                                hover:file:bg-blue-100
+                                                cursor-pointer">
+                                        </label>
+                                        <p class="text-xs text-gray-500 mt-1">Format: PDF, JPG, PNG. Maksimal 2MB</p>
+                                        @error('documents.' . $type)
+                                            <p class="text-xs text-red-600 mt-1">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                    @endif
+                                </div>
+                                @endforeach
+                            </div>
+
+                            {{-- Submit Button - Only show if there are missing documents --}}
+                            @if(count($missingDocs) > 0)
+                            <div class="mt-4">
+                                <button type="submit"
+                                    class="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold py-3 rounded-md hover:from-blue-700 hover:to-indigo-700 transition shadow-md flex items-center justify-center">
+                                    <x-heroicon-o-cloud-arrow-up class="w-5 h-5 mr-2" />
+                                    Simpan Dokumen
+                                </button>
+                            </div>
+                            @else
+                            <div class="mt-4 p-3 bg-green-50 border border-green-200 rounded-lg text-center">
+                                <p class="text-sm text-green-700 flex items-center justify-center">
+                                    <x-heroicon-o-check-badge class="w-5 h-5 mr-2" />
+                                    Semua dokumen persyaratan sudah lengkap!
+                                </p>
+                            </div>
+                            @endif
+                        </form>
+                    </div>
+
+                    {{-- Print Registration Button --}}
+                    <div class="p-4 bg-gray-50 border-t border-gray-100">
+                        <a href="{{ route('registration.print', $registrant->registration_number) }}" target="_blank"
+                            class="block w-full text-center bg-white border border-gray-300 text-gray-700 font-medium py-2 rounded-md hover:bg-gray-50 transition">
+                            <x-heroicon-o-printer class="w-4 h-4 inline mr-1" />
+                            Cetak Bukti Pendaftaran
+                        </a>
+                    </div>
+                </div>
+                @endif
             </div>
 
             {{-- Tab Content: Upload Tes --}}
@@ -370,7 +583,7 @@
                                 </div>
                                 
                                 <a href="{{ route('ujian-tes') }}" 
-                                    class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-md hover:from-purple-700 hover:to-pink-700 transition shadow-md">
+                                    class="inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold rounded-md hover:from-blue-700 hover:to-indigo-700 transition shadow-md">
                                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
                                     </svg>
@@ -383,86 +596,6 @@
             </div>
 
         </div>
-
-        {{-- Result Section (for Kelengkapan Persyaratan) --}}
-        @if(isset($registrant))
-        <div class="w-full max-w-lg mt-6 bg-white rounded-xl shadow-lg border border-blue-100 overflow-hidden animate-fade-in-up">
-            <div class="p-6 text-center border-b border-gray-100">
-                <div class="mb-2">
-                    <span
-                        class="px-4 py-1.5 rounded-full text-sm font-bold bg-{{ $registrant->status->color() }}-100 text-{{ $registrant->status->color() }}-700">
-                        {{ $registrant->status->label() }}
-                    </span>
-                </div>
-                <h3 class="text-xl font-bold text-gray-900">{{ $registrant->name }}</h3>
-                <p class="text-gray-500 text-sm">{{ $registrant->registration_number }}</p>
-            </div>
-
-            <div class="p-6 bg-gray-50 space-y-3 text-sm">
-                <div class="flex justify-between">
-                    <span class="text-gray-500">Jurusan Pilihan</span>
-                    <span class="font-medium text-gray-900">{{ $registrant->major->name }}</span>
-                </div>
-                <div class="flex justify-between">
-                    <span class="text-gray-500">Tanggal Daftar</span>
-                    <span class="font-medium text-gray-900">{{ $registrant->created_at->format('d M Y') }}</span>
-                </div>
-
-                @if($registrant->admin_note)
-                <div class="mt-4 p-3 bg-yellow-50 border border-yellow-200 rounded-md text-left">
-                    <span class="block text-xs font-bold text-yellow-700 uppercase mb-1">Catatan Panitia:</span>
-                    <p class="text-gray-700">{{ $registrant->admin_note }}</p>
-                </div>
-                @endif
-            </div>
-
-            {{-- Kelengkapan Persyaratan --}}
-            <div class="p-6 border-t border-gray-100">
-                <h4 class="text-sm font-bold text-gray-800 mb-3 flex items-center">
-                    <x-heroicon-o-clipboard-document-check class="w-4 h-4 mr-1" />
-                    Kelengkapan Persyaratan
-                </h4>
-                @php
-                    $requiredDocs = [
-                        'kartu_keluarga' => 'Kartu Keluarga (KK)',
-                        'akta_kelahiran' => 'Akta Kelahiran',
-                        'pas_foto' => 'Pas Foto',
-                        'ijazah_skl' => 'Ijazah / SKL',
-                        'surat_dokter' => 'Surat Keterangan Sehat',
-                        'sertifikat_prestasi' => 'Prestasi / Piagam',
-                    ];
-                    $uploadedDocs = $registrant->documents->pluck('document_type')->toArray();
-                @endphp
-                
-                <div class="space-y-2">
-                    @foreach($requiredDocs as $type => $label)
-                    <div class="flex items-center justify-between text-sm py-1.5 px-2 rounded {{ in_array($type, $uploadedDocs) ? 'bg-green-50' : 'bg-red-50' }}">
-                        <span class="{{ in_array($type, $uploadedDocs) ? 'text-green-800' : 'text-red-800' }}">{{ $label }}</span>
-                        @if(in_array($type, $uploadedDocs))
-                        <span class="flex items-center text-green-600">
-                            <x-heroicon-o-check-circle class="w-4 h-4 mr-1" />
-                            Lengkap
-                        </span>
-                        @else
-                        <span class="flex items-center text-red-600">
-                            <x-heroicon-o-x-circle class="w-4 h-4 mr-1" />
-                            Belum
-                        </span>
-                        @endif
-                    </div>
-                    @endforeach
-                </div>
-            </div>
-
-            <div class="p-4 bg-white border-t border-gray-100">
-                <a href="{{ route('registration.print', $registrant->registration_number) }}" target="_blank"
-                    class="block w-full text-center bg-blue-50 text-blue-600 font-bold py-2 rounded-md hover:bg-blue-100 transition">
-                    <x-heroicon-o-printer class="w-4 h-4 inline mr-1" />
-                    Cetak Ulang Bukti Pendaftaran
-                </a>
-            </div>
-        </div>
-        @endif
 
     </main>
 

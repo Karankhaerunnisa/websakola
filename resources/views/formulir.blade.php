@@ -31,38 +31,34 @@
                     </a>
                 </div>
 
-                <!--<div class="hidden md:flex items-center space-x-4 relative z-10">
+                <div class="hidden md:flex items-center space-x-4 relative z-10">
                     <a href="{{ route('home') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition cursor-pointer">
+                        class="text-sm font-medium {{ request()->routeIs('home') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
                         <x-heroicon-o-home class="w-4 h-4 mr-1" />
                         Beranda
                     </a>
                     <a href="{{ route('formulir') }}"
-                        class="text-sm font-medium text-blue-600 flex items-center transition cursor-pointer">
+                        class="text-sm font-medium {{ request()->routeIs('formulir') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
                         <x-heroicon-o-pencil-square class="w-4 h-4 mr-1" />
                         Formulir
                     </a>
                     <a href="{{ route('registration.check-status.form') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition cursor-pointer">
+                        class="text-sm font-medium {{ request()->routeIs('registration.check-status.form') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
                         <x-heroicon-o-clipboard-document-check class="w-4 h-4 mr-1" />
                         Cek Status
                     </a>
                     <a href="{{ route('ujian-tes') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition cursor-pointer">
+                        class="text-sm font-medium {{ request()->routeIs('ujian-tes') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
                         <x-heroicon-o-document-text class="w-4 h-4 mr-1" />
                         Tes Minat & Bakat
                     </a>
                     <a href="{{ route('pengumuman-seleksi') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center transition cursor-pointer">
+                        class="text-sm font-medium {{ request()->routeIs('pengumuman-seleksi') ? 'text-blue-600' : 'text-gray-600 hover:text-blue-600' }} flex items-center transition cursor-pointer">
                         <x-heroicon-o-academic-cap class="w-4 h-4 mr-1" />
                         Pengumuman Seleksi
                     </a>
-                    <a href="/login"
-                        class="text-sm font-medium bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 flex items-center transition cursor-pointer">
-                        <x-heroicon-o-lock-closed class="w-4 h-4 mr-1" />
-                        Login
-                    </a>
-                </div>-->
+                    
+                </div>
 
                 <div class="-mr-2 flex items-center md:hidden">
                     <button @click="open = !open"
@@ -84,35 +80,35 @@
 
             <div class="pt-2 pb-3 space-y-1 px-4">
                 <a href="{{ route('home') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('home') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-home class="w-5 h-5 mr-2" />
                         Beranda
                     </div>
                 </a>
                 <a href="{{ route('formulir') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-blue-600 bg-blue-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('formulir') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-pencil-square class="w-5 h-5 mr-2" />
                         Formulir
                     </div>
                 </a>
                 <a href="{{ route('registration.check-status.form') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('registration.check-status.form') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-clipboard-document-check class="w-5 h-5 mr-2" />
                         Cek Status
                     </div>
                 </a>
                 <a href="{{ route('ujian-tes') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('ujian-tes') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-document-text class="w-5 h-5 mr-2" />
                         Tes Minat & Bakat
                     </div>
                 </a>
                 <a href="{{ route('pengumuman-seleksi') }}"
-                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-600 hover:text-blue-600 hover:bg-gray-50 transition">
+                    class="block w-full text-left px-3 py-2 rounded-md text-base font-medium {{ request()->routeIs('pengumuman-seleksi') ? 'text-blue-600 bg-blue-50' : 'text-gray-600 hover:text-blue-600 hover:bg-gray-50' }} transition">
                     <div class="flex items-center">
                         <x-heroicon-o-academic-cap class="w-5 h-5 mr-2" />
                         Pengumuman Seleksi
@@ -124,28 +120,11 @@
     </nav>
 
     {{-- Page Header --}}
-    <div class="bg-gradient-to-r from-blue-600 to-indigo-700 px-6 py-12 text-white">
-        <div class="max-w-4xl mx-auto text-center">
-            <h1 class="text-3xl md:text-4xl font-extrabold mb-3">Formulir Pendaftaran</h1>
-            <p class="text-blue-100 text-lg">SPMB Online {{ \App\Models\Setting::getValue('academic_year') }}</p>
-            
-            @if($isOpen)
-            <div class="mt-4 inline-flex items-center bg-green-500 text-white px-4 py-2 rounded-full font-bold shadow-lg">
-                <x-heroicon-o-check-circle class="w-5 h-5 mr-2" />
-                Pendaftaran Dibuka
-            </div>
-            @else
-            <div class="mt-4 inline-flex items-center bg-red-500 text-white px-4 py-2 rounded-full font-bold shadow-lg">
-                <x-heroicon-o-x-circle class="w-5 h-5 mr-2" />
-                Pendaftaran Ditutup
-            </div>
-            @endif
-        </div>
-    </div>
-
     {{-- Main Content --}}
     @if($isOpen)
     <div class="max-w-4xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        
+
         <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-100">
             <div class="bg-blue-600 px-6 py-4 border-b border-blue-500">
                 <h2 class="text-xl font-bold text-white flex items-center">
@@ -157,11 +136,41 @@
 
             <form action="{{ route('registration.store') }}" method="POST" enctype="multipart/form-data" class="p-8 space-y-8" x-data="{
                       mtk: 0, indo: 0, ing: 0, ipa: 0,
+                      registrationPath: '{{ old('registration_path', '') }}',
+                      prestasiAkademik: [
+                          { semester: 1, peringkat: '{{ old('prestasi_akademik.0.peringkat', '') }}', keterangan: '{{ old('prestasi_akademik.0.keterangan', '') }}' },
+                          { semester: 2, peringkat: '{{ old('prestasi_akademik.1.peringkat', '') }}', keterangan: '{{ old('prestasi_akademik.1.keterangan', '') }}' },
+                          { semester: 3, peringkat: '{{ old('prestasi_akademik.2.peringkat', '') }}', keterangan: '{{ old('prestasi_akademik.2.keterangan', '') }}' },
+                          { semester: 4, peringkat: '{{ old('prestasi_akademik.3.peringkat', '') }}', keterangan: '{{ old('prestasi_akademik.3.keterangan', '') }}' },
+                          { semester: 5, peringkat: '{{ old('prestasi_akademik.4.peringkat', '') }}', keterangan: '{{ old('prestasi_akademik.4.keterangan', '') }}' },
+                                       ],
+                      prestasiNonAkademik: [{ nama_lomba: '', tingkat: '', peringkat: '', tahun: '' }],
+                      addPrestasiNonAkademik() {
+                          this.prestasiNonAkademik.push({ nama_lomba: '', tingkat: '', peringkat: '', tahun: '' });
+                      },
+                      removePrestasiNonAkademik(index) {
+                          if (this.prestasiNonAkademik.length > 1) {
+                              this.prestasiNonAkademik.splice(index, 1);
+                          }
+                      },
                       get average() {
                           return ((Number(this.mtk) + Number(this.indo) + Number(this.ing) + Number(this.ipa)) / 4).toFixed(2);
                       }
                   }">
                 @csrf
+
+                {{-- Session Error (dari exception atau 403) --}}
+                @if(session('error'))
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-6 rounded-md shadow-sm">
+                    <div class="flex items-center">
+                        <x-heroicon-o-exclamation-triangle class="h-6 w-6 text-red-500 mr-3" />
+                        <div>
+                            <h3 class="text-sm font-bold text-red-800">Terjadi Kesalahan</h3>
+                            <p class="text-sm text-red-700">{{ session('error') }}</p>
+                        </div>
+                    </div>
+                </div>
+                @endif
 
                 @if ($errors->any())
                 <div id="form-errors"
@@ -198,7 +207,7 @@
                     <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Pilihan Jurusan & Jalur Pendaftaran</h3>
                     <div class="space-y-4">
                         <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-1">Pilihan Jurusan
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Pilihan Jurusan 1
                                 <span class="text-red-500">*</span></label>
                             <select name="major_id" required
                                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
@@ -211,16 +220,150 @@
                             <p class="text-xs text-gray-500 mt-1">Jurusan yang Anda pilih menjadi pertimbangan, keputusan akhir ditentukan oleh panitia seleksi.</p>
                         </div>
                         <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Pilihan Jurusan 2
+                                <span class="text-red-500">*</span></label>
+                            <select name="jurusan2" required
+                                class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                <option value="">-- Pilih Jurusan 2 --</option>
+                                @foreach($majors as $major)
+                                <option value="{{ $major->id }}" {{ old('jurusan2') == $major->id ? 'selected' : '' }}>{{ $major->name }}</option>
+                                @endforeach
+                            </select>
+                            <p class="text-xs text-gray-500 mt-1">Pilihan jurusan kedua jika kuota jurusan pertama penuh.</p>
+                        </div>
+                        <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">Jalur Pendaftaran
                                 <span class="text-red-500">*</span></label>
-                            <select name="registration_path" required
+                            <select name="registration_path" x-model="registrationPath" required
                                 class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
                                 <option value="">-- Pilih Jalur --</option>
-                                <option value="umum" {{ old('registration_path') == 'umum' ? 'selected' : '' }}>Jalur Umum</option>
-                                <option value="prestasi" {{ old('registration_path') == 'prestasi' ? 'selected' : '' }}>Jalur Prestasi</option>
+                                <option value="umum">Jalur Umum</option>
+                                <option value="prestasi">Jalur Prestasi</option>
                             </select>
-                            <p class="text-xs text-gray-500 mt-1">Jalur Prestasi memerlukan bukti prestasi (sertifikat/piagam).</p>
+                            <p class="text-xs text-gray-500 mt-1">Jalur Prestasi memerlukan bukti prestasi (sertifikat/piagam) dan data prestasi.</p>
                         </div>
+                    </div>
+                </div>
+
+                {{-- Section: Data Prestasi - Hanya muncul untuk Jalur Prestasi --}}
+                <div x-show="registrationPath === 'prestasi'" x-transition:enter="transition ease-out duration-300" 
+                     x-transition:enter-start="opacity-0 transform -translate-y-4" 
+                     x-transition:enter-end="opacity-100 transform translate-y-0"
+                     class="bg-gradient-to-r from-amber-50 to-orange-50 rounded-xl p-6 border border-amber-200">
+                    
+                   
+                    <p class="text-sm text-amber-700 mb-6">Data ini wajib diisi untuk Jalur Prestasi Akademik dan Non-Akademik</p>
+
+                    {{-- Prestasi Akademik: Peringkat Semester 1-6 --}}
+                    <div class="mb-6">
+                        <h4 class="font-bold text-gray-800 mb-3 flex items-center text-sm">
+                            <x-heroicon-o-academic-cap class="w-5 h-5 mr-2 text-blue-600" />
+                            Prestasi Akademik Tingkat SMP/MTS (Peringkat Kelas Semester 1-5)
+                        </h4>
+                        <div class="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                            <table class="w-full text-sm">
+                                <thead class="bg-gray-50">
+                                    <tr>
+                                        <th class="px-4 py-2 text-left text-xs font-semibold text-gray-600">Semester</th>
+                                        <th class="px-4 py-2 text-left text-xs font-semibold text-gray-600">Peringkat</th>
+                                        <th class="px-4 py-2 text-left text-xs font-semibold text-gray-600">Keterangan/Lomba</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-100">
+                                    <template x-for="(item, index) in prestasiAkademik" :key="index">
+                                        <tr>
+                                            <td class="px-4 py-2">
+                                                <span class="font-medium text-gray-700" x-text="'Semester ' + item.semester"></span>
+                                                <input type="hidden" :name="'prestasi_akademik[' + index + '][semester]'" :value="item.semester">
+                                            </td>
+                                            <td class="px-4 py-2">
+                                                <select :name="'prestasi_akademik[' + index + '][peringkat]'" x-model="item.peringkat"
+                                                    class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                                    <option value="">-- Pilih --</option>
+                                                    <option value="1">Peringkat 1</option>
+                                                    <option value="2">Peringkat 2</option>
+                                                    <option value="3">Peringkat 3</option>
+                                                    </select>
+                                            </td>
+                                            <td class="px-4 py-2">
+                                                <input type="text" :name="'prestasi_akademik[' + index + '][keterangan]'" x-model="item.keterangan"
+                                                    placeholder="Contoh: Juara kelas"
+                                                    class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    {{-- Prestasi Non-Akademik: Lomba --}}
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-gray-800 flex items-center text-sm">
+                                <x-heroicon-o-star class="w-5 h-5 mr-2 text-yellow-500" />
+                                Prestasi Non-Akademik Tingkat SD/MI-SMP/MTS (Lomba/Kejuaraan)
+                            </h4>
+                            <button type="button" @click="addPrestasiNonAkademik()"
+                                class="inline-flex items-center px-3 py-1.5 bg-green-600 text-white text-xs font-semibold rounded-md hover:bg-green-700 transition">
+                                <x-heroicon-o-plus class="w-4 h-4 mr-1" />
+                                Tambah Lomba
+                            </button>
+                        </div>
+                        
+                        <div class="space-y-3">
+                            <template x-for="(lomba, index) in prestasiNonAkademik" :key="index">
+                                <div class="bg-white rounded-lg border border-gray-200 p-4 relative">
+                                    <button type="button" @click="removePrestasiNonAkademik(index)" 
+                                        x-show="prestasiNonAkademik.length > 1"
+                                        class="absolute top-2 right-2 p-1 text-red-500 hover:bg-red-50 rounded-full transition">
+                                        <x-heroicon-o-x-mark class="w-4 h-4" />
+                                    </button>
+                                    
+                                    <div class="grid grid-cols-1 md:grid-cols-4 gap-3">
+                                        <div class="md:col-span-2">
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Nama Lomba/Kejuaraan</label>
+                                            <input type="text" :name="'prestasi_non_akademik[' + index + '][nama_lomba]'" x-model="lomba.nama_lomba"
+                                                placeholder="Contoh: Lomba Futsal, Pramuka, dll"
+                                                class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Tingkat</label>
+                                            <select :name="'prestasi_non_akademik[' + index + '][tingkat]'" x-model="lomba.tingkat"
+                                                class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                                <option value="">-- Pilih --</option>
+                                                <option value="kabupaten">Kabupaten/Kota</option>
+                                                <option value="provinsi">Provinsi</option>
+                                                <option value="nasional">Nasional</option>
+                                                <option value="internasional">Internasional</option>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <label class="block text-xs font-medium text-gray-600 mb-1">Peringkat/Juara</label>
+                                            <select :name="'prestasi_non_akademik[' + index + '][peringkat]'" x-model="lomba.peringkat"
+                                                class="w-full text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                                <option value="">-- Pilih --</option>
+                                                <option value="juara_1">Juara 1</option>
+                                                <option value="juara_2">Juara 2</option>
+                                                <option value="juara_3">Juara 3</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mt-3">
+                                        <label class="block text-xs font-medium text-gray-600 mb-1">Tahun</label>
+                                        <input type="number" :name="'prestasi_non_akademik[' + index + '][tahun]'" x-model="lomba.tahun"
+                                            placeholder="2024" min="2018" max="2026"
+                                            class="w-24 text-sm rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        
+                        <p class="text-xs text-gray-500 mt-3">
+                            <x-heroicon-o-information-circle class="w-4 h-4 inline" />
+                            Klik "Tambah Lomba" untuk menambahkan lebih banyak prestasi. Pastikan sertifikat/piagam sesuai dengan data yang diisi.
+                        </p>
                     </div>
                 </div>
 
@@ -371,14 +514,58 @@
                 </div>
 
                 {{-- Section: Data Akademik --}}
-                <div>
+                <div x-data="{ selectedSchool: '{{ old('asal_sekolah', '') }}', isOther: {{ old('asal_sekolah_lainnya') ? 'true' : 'false' }} }">
                     <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Data Akademik</h3>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Asal Sekolah
                             <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="asal_sekolah" value="{{ old('asal_sekolah') }}" required
-                            class="mt-1 w-full rounded-md border-gray-300 shadow-sm">
+                        <select name="asal_sekolah" required x-model="selectedSchool" @change="isOther = (selectedSchool === 'LAINNYA')"
+                            class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
+                            <option value="">-- Pilih Sekolah --</option>
+                            <option value="SMPN 1 BANYURESMI" {{ old('asal_sekolah') == 'SMPN 1 BANYURESMI' ? 'selected' : '' }}>SMPN 1 BANYURESMI</option>
+                            <option value="SMPN 2 BANYURESMI" {{ old('asal_sekolah') == 'SMPN 2 BANYURESMI' ? 'selected' : '' }}>SMPN 2 BANYURESMI</option>
+                            <option value="SMPN 3 BANYURESMI" {{ old('asal_sekolah') == 'SMPN 3 BANYURESMI' ? 'selected' : '' }}>SMPN 3 BANYURESMI</option>
+                            <option value="SMPN 1 LEUWIGOONG" {{ old('asal_sekolah') == 'SMPN 1 LEUWIGOONG' ? 'selected' : '' }}>SMPN 1 LEUWIGOONG</option>
+                            <option value="SMPN 2 LEUWIGOONG" {{ old('asal_sekolah') == 'SMPN 2 LEUWIGOONG' ? 'selected' : '' }}>SMPN 2 LEUWIGOONG</option>
+                            <option value="SMPN 1 CIBIUK" {{ old('asal_sekolah') == 'SMPN 1 CIBIUK' ? 'selected' : '' }}>SMPN 1 CIBIUK</option>
+                            <option value="SMPN 2 CIBIUK" {{ old('asal_sekolah') == 'SMPN 2 CIBIUK' ? 'selected' : '' }}>SMPN 2 CIBIUK</option>
+                            <option value="SMP ISLAM PERJUANGAN" {{ old('asal_sekolah') == 'SMP ISLAM PERJUANGAN' ? 'selected' : '' }}>SMP ISLAM PERJUANGAN</option>
+                            <option value="SMP MUSLIMIN" {{ old('asal_sekolah') == 'SMP MUSLIMIN' ? 'selected' : '' }}>SMP MUSLIMIN</option>
+                            <option value="SMP DARUL ASIKIN" {{ old('asal_sekolah') == 'SMP DARUL ASIKIN' ? 'selected' : '' }}>SMP DARUL ASIKIN</option>
+                            <option value="SMP DARUL MUKMININ" {{ old('asal_sekolah') == 'SMP DARUL MUKMININ' ? 'selected' : '' }}>SMP DARUL MUKMININ</option>
+                            <option value="SMP KARYAMUDA" {{ old('asal_sekolah') == 'SMP KARYAMUDA' ? 'selected' : '' }}>SMP KARYAMUDA</option>
+                            <option value="SMP MANGGALA" {{ old('asal_sekolah') == 'SMP MANGGALA' ? 'selected' : '' }}>SMP MANGGALA</option>
+                            <option value="SMP AL FALAH" {{ old('asal_sekolah') == 'SMP AL FALAH' ? 'selected' : '' }}>SMP AL FALAH</option>
+                            <option value="SMP AL GHIFARI" {{ old('asal_sekolah') == 'SMP AL GHIFARI' ? 'selected' : '' }}>SMP AL GHIFARI</option>
+                            <option value="SMP YAKHA" {{ old('asal_sekolah') == 'SMP YAKHA' ? 'selected' : '' }}>SMP YAKHA</option>
+                            <option value="SMP NURUL AMIN" {{ old('asal_sekolah') == 'SMP NURUL AMIN' ? 'selected' : '' }}>SMP NURUL AMIN</option>
+                            <option value="SMP SALAFIYAH" {{ old('asal_sekolah') == 'SMP SALAFIYAH' ? 'selected' : '' }}>SMP SALAFIYAH</option>
+                            <option value="SMP AL HAWARI" {{ old('asal_sekolah') == 'SMP AL HAWARI' ? 'selected' : '' }}>SMP AL HAWARI</option>
+                            <option value="MTS PERSIS LEMPONG" {{ old('asal_sekolah') == 'MTS PERSIS LEMPONG' ? 'selected' : '' }}>MTS PERSIS LEMPONG</option>
+                            <option value="MTS AL HANAFI" {{ old('asal_sekolah') == 'MTS AL HANAFI' ? 'selected' : '' }}>MTS AL HANAFI</option>
+                            <option value="MTS PERSIS PASIRSALAM" {{ old('asal_sekolah') == 'MTS PERSIS PASIRSALAM' ? 'selected' : '' }}>MTS PERSIS PASIRSALAM</option>
+                            <option value="MTS BAITUROHMAN" {{ old('asal_sekolah') == 'MTS BAITUROHMAN' ? 'selected' : '' }}>MTS BAITUROHMAN</option>
+                            <option value="MTS MUHAMADIYAH BOJONG" {{ old('asal_sekolah') == 'MTS MUHAMADIYAH BOJONG' ? 'selected' : '' }}>MTS MUHAMADIYAH BOJONG</option>
+                            <option value="MTS AL FALAH" {{ old('asal_sekolah') == 'MTS AL FALAH' ? 'selected' : '' }}>MTS AL FALAH</option>
+                            <option value="MTS SA AL HIDAYAH" {{ old('asal_sekolah') == 'MTS SA AL HIDAYAH' ? 'selected' : '' }}>MTS SA AL HIDAYAH</option>
+                            <option value="MTS AL YUSUFIAH" {{ old('asal_sekolah') == 'MTS AL YUSUFIAH' ? 'selected' : '' }}>MTS AL YUSUFIAH</option>
+                            <option value="MTS MUHAMADIYAH LIMBANGAN" {{ old('asal_sekolah') == 'MTS MUHAMADIYAH LIMBANGAN' ? 'selected' : '' }}>MTS MUHAMADIYAH LIMBANGAN</option>
+                            <option value="MTS ASSALAM" {{ old('asal_sekolah') == 'MTS ASSALAM' ? 'selected' : '' }}>MTS ASSALAM</option>
+                            <option value="LAINNYA" {{ old('asal_sekolah') == 'LAINNYA' ? 'selected' : '' }}>-- Lainnya (Isi Dibawah) --</option>
+                        </select>
+                    </div>
+                    
+                    {{-- Input Manual jika pilih Lainnya --}}
+                    <div class="mb-4" x-show="isOther" x-transition>
+                        <label class="block text-sm font-medium text-gray-700">Nama Sekolah
+                            <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="asal_sekolah_lainnya" value="{{ old('asal_sekolah_lainnya') }}" 
+                            :required="isOther"
+                            placeholder="Ketik nama sekolah asal..."
+                            class="mt-1 w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500">
+                        <p class="text-xs text-gray-500 mt-1">Tulis nama sekolah lengkap, contoh: SMPN 1 GARUT</p>
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium text-gray-700">Tahun Lulus
@@ -388,7 +575,7 @@
                             class="mt-1 w-full rounded-md border-gray-300 shadow-sm">
                     </div>
 
-                    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 items-end bg-blue-50 p-4 rounded-lg">
+                   <!-- <div class="grid grid-cols-2 md:grid-cols-5 gap-4 items-end bg-blue-50 p-4 rounded-lg">
                         <div>
                             <label class="text-xs text-gray-600">Matematika</label>
                             <input type="number" name="nilai_matematika" x-model="mtk" step="0.01"
@@ -413,7 +600,7 @@
                             <div class="text-xs text-gray-500 mb-1">Rata-Rata</div>
                             <div class="font-bold text-xl text-blue-600" x-text="average">0.00</div>
                         </div>
-                    </div>
+                    </div>-->
                 </div>
 
                 {{-- Section: Data Orang Tua --}}
@@ -492,7 +679,7 @@
                 {{-- Section Upload Dokumen --}}
                 <div>
                     <h3 class="text-lg font-bold text-gray-800 mb-4 border-b pb-2">Upload Dokumen</h3>
-                    <p class="text-sm text-gray-500 mb-4">Upload dokumen dalam format PDF (maksimal 1MB per file). Pas foto bisa berupa PDF, JPG, atau PNG.</p>
+                    <p class="text-sm text-gray-500 mb-4">Upload dokumen dalam format PDF, JPG, atau PNG (maksimal 1MB per file, kecuali Pas Foto dan Sertifikat maks 2MB).</p>
 
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         {{-- Kartu Keluarga --}}
@@ -502,9 +689,22 @@
                                 Kartu Keluarga (KK)
                             </label>
                             <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition bg-gray-50">
-                                <input type="file" name="dokumen_kk" accept=".pdf"
+                                <input type="file" name="dokumen_kk" accept=".pdf,.jpg,.jpeg,.png"
                                     class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                                <p class="text-xs text-gray-400 mt-1">Format: PDF, Maks: 1MB</p>
+                                <p class="text-xs text-gray-400 mt-1">Format: PDF/JPG/PNG, Maks: 1MB</p>
+                            </div>
+                        </div>
+
+                        {{-- KTP Orangtua --}}
+                        <div class="relative">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <x-heroicon-o-identification class="w-4 h-4 inline mr-1" />
+                                KTP Orangtua
+                            </label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition bg-gray-50">
+                                <input type="file" name="dokumen_ktp" accept=".pdf,.jpg,.jpeg,.png"
+                                    class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                                <p class="text-xs text-gray-400 mt-1">Format: PDF/JPG/PNG, Maks: 1MB</p>
                             </div>
                         </div>
 
@@ -515,9 +715,9 @@
                                 Akta Kelahiran
                             </label>
                             <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition bg-gray-50">
-                                <input type="file" name="dokumen_akta" accept=".pdf"
+                                <input type="file" name="dokumen_akta" accept=".pdf,.jpg,.jpeg,.png"
                                     class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                                <p class="text-xs text-gray-400 mt-1">Format: PDF, Maks: 1MB</p>
+                                <p class="text-xs text-gray-400 mt-1">Format: PDF/JPG/PNG, Maks: 1MB</p>
                             </div>
                         </div>
 
@@ -541,14 +741,27 @@
                                 Ijazah / SKL
                             </label>
                             <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition bg-gray-50">
-                                <input type="file" name="dokumen_ijazah" accept=".pdf"
+                                <input type="file" name="dokumen_ijazah" accept=".pdf,.jpg,.jpeg,.png"
                                     class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                                <p class="text-xs text-gray-400 mt-1">Format: PDF, Maks: 1MB</p>
+                                <p class="text-xs text-gray-400 mt-1">Format: PDF/JPG/PNG, Maks: 1MB</p>
+                            </div>
+                        </div>
+
+                        {{-- Kartu Indonesia Pintar (KIP) --}}
+                        <div class="relative">
+                            <label class="block text-sm font-medium text-gray-700 mb-2">
+                                <x-heroicon-o-credit-card class="w-4 h-4 inline mr-1" />
+                                Kartu Indonesia Pintar (KIP)
+                                <span class="text-xs text-gray-400 font-normal">(Opsional)</span>
+                            </label>
+                            <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition bg-gray-50">
+                                <input type="file" name="dokumen_kip" accept=".pdf,.jpg,.jpeg,.png"
+                                    class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-amber-50 file:text-amber-700 hover:file:bg-amber-100">
+                                <p class="text-xs text-gray-400 mt-1">Format: PDF/JPG/PNG, Maks: 1MB (Upload jika memiliki KIP)</p>
                             </div>
                         </div>
                     </div>
                 </div>
-
                 {{-- Surat Keterangan Dokter & Sertifikat --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {{-- Surat Keterangan Sehat --}}
@@ -558,22 +771,31 @@
                             Surat Keterangan Sehat (Pilihan Jurusan TSM & TKR)
                         </label>
                         <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition bg-gray-50">
-                            <input type="file" name="dokumen_suratdokter" accept=".pdf"
+                            <input type="file" name="dokumen_suratdokter" accept=".pdf,.jpg,.jpeg,.png"
                                 class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                            <p class="text-xs text-gray-400 mt-1">Format: PDF, Maks: 1MB</p>
+                            <p class="text-xs text-gray-400 mt-1">Format: PDF/JPG/PNG, Maks: 1MB</p>
                         </div>
                     </div>
 
-                    {{-- Sertifikat / Piagam Prestasi --}}
-                    <div class="relative">
+                    {{-- Sertifikat / Piagam Prestasi - WAJIB untuk Jalur Prestasi --}}
+                    <div class="relative" x-show="registrationPath === 'prestasi'" 
+                         x-transition:enter="transition ease-out duration-200"
+                         x-transition:enter-start="opacity-0"
+                         x-transition:enter-end="opacity-100">
                         <label class="block text-sm font-medium text-gray-700 mb-2">
-                            <x-heroicon-o-document-text class="w-4 h-4 inline mr-1" />
-                            Sertifikat/ Piagam (Jalur Prestasi)
+                            <x-heroicon-o-trophy class="w-4 h-4 inline mr-1 text-amber-500" />
+                            Sertifikat/ Piagam Prestasi
+                            <span class="text-red-500">*</span>
+                            <span class="text-xs text-red-500 font-normal">(Wajib untuk Jalur Prestasi)</span>
                         </label>
-                        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4 hover:border-blue-400 transition bg-gray-50">
+                        <div class="border-2 border-dashed border-amber-300 rounded-lg p-4 hover:border-amber-500 transition bg-amber-50">
                             <input type="file" name="sertifikat_prestasi" accept=".pdf"
-                                class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
-                            <p class="text-xs text-gray-400 mt-1">Format: PDF, (gabung beberapa sertifikat menjadi 1 file)<br> Maks: 2MB</p>
+                                :required="registrationPath === 'prestasi'"
+                                class="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-amber-100 file:text-amber-700 hover:file:bg-amber-200">
+                            <p class="text-xs text-amber-600 mt-1">
+                                <strong>Format: PDF</strong> (Gabung beberapa sertifikat menjadi 1 file)<br>
+                                Maksimal: 2MB
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -611,9 +833,177 @@
 
     {{-- Footer --}}
     <footer class="bg-gray-900 text-white py-8 mt-12 text-center">
-        <p>&copy; {{ date('Y') }} {{ \App\Models\Setting::getValue('school_name') }}. All Rights Reserved.</p>
+        <p>&copy; {{ date('Y') }} {{ \App\Models\Setting::getValue('school_name') }}. alamat: {{ \App\Models\Setting::getValue('school_address') }}.</p>
     </footer>
+
+    {{-- Auto-save Script --}}
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const STORAGE_KEY = 'spmb_formulir_draft';
+        const form = document.querySelector('form[action*="registration.store"]');
+        
+        if (!form) return;
+        
+        // Daftar field yang akan disimpan (tidak termasuk file dan csrf)
+        const fieldsToSave = [
+            'name', 'nisn', 'nik', 'birth_place', 'birth_date', 'gender', 'religion',
+            'alamat', 'rt', 'rw', 'kode_pos', 'kelurahan', 'kecamatan', 'kota', 'provinsi',
+            'phone', 'email', 'asal_sekolah', 'asal_sekolah_lainnya', 'tahun_lulus',
+            'nama_ayah', 'pekerjaan_ayah', 'penghasilan_ayah', 'no_hp_ayah',
+            'nama_ibu', 'pekerjaan_ibu', 'penghasilan_ibu', 'no_hp_ibu',
+            'major_id', 'jurusan2', 'registration_path'
+        ];
+        
+        // Buat indikator status simpan
+        const statusIndicator = document.createElement('div');
+        statusIndicator.id = 'autosave-status';
+        statusIndicator.className = 'fixed bottom-4 left-4 bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg text-sm flex items-center space-x-2 z-50 opacity-0 transition-opacity duration-300';
+        statusIndicator.innerHTML = `
+            <svg class="w-4 h-4 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <span>Data tersimpan otomatis</span>
+        `;
+        document.body.appendChild(statusIndicator);
+        
+        let saveTimeout;
+        
+        // Fungsi untuk menampilkan indikator
+        function showSaveIndicator() {
+            statusIndicator.classList.remove('opacity-0');
+            statusIndicator.classList.add('opacity-100');
+            setTimeout(() => {
+                statusIndicator.classList.remove('opacity-100');
+                statusIndicator.classList.add('opacity-0');
+            }, 2000);
+        }
+        
+        // Fungsi untuk menyimpan data ke localStorage
+        function saveFormData() {
+            const formData = {};
+            
+            fieldsToSave.forEach(fieldName => {
+                const field = form.querySelector(`[name="${fieldName}"]`);
+                if (field) {
+                    formData[fieldName] = field.value;
+                }
+            });
+            
+            // Simpan timestamp
+            formData._savedAt = new Date().toISOString();
+            
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+            showSaveIndicator();
+        }
+        
+        // Fungsi untuk memuat data dari localStorage
+        function loadFormData() {
+            const savedData = localStorage.getItem(STORAGE_KEY);
+            if (!savedData) return;
+            
+            try {
+                const formData = JSON.parse(savedData);
+                
+                // Cek apakah data masih valid (maksimal 7 hari)
+                if (formData._savedAt) {
+                    const savedDate = new Date(formData._savedAt);
+                    const now = new Date();
+                    const daysDiff = (now - savedDate) / (1000 * 60 * 60 * 24);
+                    
+                    if (daysDiff > 7) {
+                        localStorage.removeItem(STORAGE_KEY);
+                        return;
+                    }
+                }
+                
+                // Isi form dengan data tersimpan
+                fieldsToSave.forEach(fieldName => {
+                    if (formData[fieldName] !== undefined && formData[fieldName] !== '') {
+                        const field = form.querySelector(`[name="${fieldName}"]`);
+                        if (field && !field.value) {
+                            field.value = formData[fieldName];
+                            // Trigger change event untuk Alpine.js
+                            field.dispatchEvent(new Event('change', { bubbles: true }));
+                            field.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                    }
+                });
+                
+                // Tampilkan notifikasi data dimuat
+                const loadNotif = document.createElement('div');
+                loadNotif.className = 'fixed bottom-4 right-4 bg-blue-600 text-white px-4 py-3 rounded-lg shadow-lg text-sm z-50 flex items-center space-x-3';
+                loadNotif.innerHTML = `
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                    </svg>
+                    <div>
+                        <strong>Data sebelumnya ditemukan</strong>
+                        <p class="text-xs text-blue-200">Form telah diisi dengan data yang tersimpan</p>
+                    </div>
+                    <button onclick="this.parentElement.remove()" class="ml-2 text-white hover:text-blue-200">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                `;
+                document.body.appendChild(loadNotif);
+                
+                // Hapus notifikasi setelah 5 detik
+                setTimeout(() => {
+                    if (loadNotif.parentElement) {
+                        loadNotif.remove();
+                    }
+                }, 5000);
+                
+            } catch (e) {
+                console.error('Error loading saved form data:', e);
+            }
+        }
+        
+        // Muat data tersimpan saat halaman dimuat
+        loadFormData();
+        
+        // Auto-save saat ada perubahan (dengan debounce 2 detik)
+        form.addEventListener('input', function(e) {
+            if (e.target.type === 'file') return; // Skip file inputs
+            
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveFormData, 2000);
+        });
+        
+        form.addEventListener('change', function(e) {
+            if (e.target.type === 'file') return; // Skip file inputs
+            
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(saveFormData, 1000);
+        });
+        
+        // Hapus data tersimpan saat form berhasil di-submit
+        form.addEventListener('submit', function() {
+            localStorage.removeItem(STORAGE_KEY);
+        });
+        
+        // Tambahkan tombol hapus draft
+        const clearDraftBtn = document.createElement('button');
+        clearDraftBtn.type = 'button';
+        clearDraftBtn.className = 'text-sm text-red-500 hover:text-red-700 underline mt-2';
+        clearDraftBtn.textContent = 'Hapus data tersimpan (mulai dari awal)';
+        clearDraftBtn.onclick = function() {
+            if (confirm('Yakin ingin menghapus semua data yang telah diisi?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                location.reload();
+            }
+        };
+        
+        // Sisipkan tombol sebelum tombol submit
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) {
+            submitBtn.parentElement.insertBefore(clearDraftBtn, submitBtn);
+        }
+    });
+    </script>
 
 </body>
 
 </html>
+

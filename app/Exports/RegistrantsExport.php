@@ -27,7 +27,7 @@ class RegistrantsExport implements FromQuery, WithHeadings, WithMapping, ShouldA
     public function query()
     {
         return Registrant::query()
-            ->with(['major', 'guardians'])
+            ->with(['major', 'address', 'academic', 'pengumumanUjian', 'academicAchievements', 'nonAcademicAchievements'])
             ->when($this->request->majorCode, function ($query, $majorCode) {
                 $query->whereRelation('major', 'code', $majorCode);
             })
@@ -35,7 +35,13 @@ class RegistrantsExport implements FromQuery, WithHeadings, WithMapping, ShouldA
             ->when($this->request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('registration_number', 'like', "%{$search}%");
+                        ->orWhere('registration_number', 'like', "%{$search}%")
+                        ->orWhere('nisn', 'like', "%{$search}%");
+                });
+            })
+            ->when($this->request->schoolSearch, function ($query, $schoolSearch) {
+                $query->whereHas('academic', function ($q) use ($schoolSearch) {
+                    $q->where('school_name', 'like', "%{$schoolSearch}%");
                 });
             });
     }
@@ -46,14 +52,32 @@ class RegistrantsExport implements FromQuery, WithHeadings, WithMapping, ShouldA
     public function headings(): array
     {
         return [
-            'No. Pendaftaran',
-            'Nama Lengkap',
-            'Jurusan',
-            'Jenis Kelamin',
-            'Asal Sekolah',
-            'No. HP',
-            'Status',
+            'No. Register',
             'Tanggal Daftar',
+            'Jurusan',
+            'Jalur Daftar',
+            'Nama Lengkap',
+            'NISN',
+            'NIK',
+            'Tempat Lahir',
+            'Tanggal Lahir',
+            'Jenis Kelamin',
+            'Agama',
+            'Alamat Lengkap',
+            'RT',
+            'RW',
+            'Kode Pos',
+            'Desa/Kelurahan',
+            'Kecamatan',
+            'Kabupaten/Kota',
+            'Provinsi',
+            'No. HP',
+            'Email',
+            'Asal Sekolah',
+            'Tahun Lulus',
+            'Prestasi Akademik',
+            'Prestasi Non-Akademik',
+            'Status Lulus',
         ];
     }
 
@@ -62,15 +86,89 @@ class RegistrantsExport implements FromQuery, WithHeadings, WithMapping, ShouldA
      */
     public function map($registrant): array
     {
+        // Get registration path label
+        $registrationPath = match($registrant->registration_path ?? 'umum') {
+            'umum' => 'Jalur Umum',
+            'prestasi' => 'Jalur Prestasi',
+            default => '-',
+        };
+
+        // Get religion label
+        $religionLabel = $registrant->religion ? $registrant->religion->label() : '-';
+
+        // Get gender label
+        $genderLabel = $registrant->gender ? $registrant->gender->label() : '-';
+
+        // Get pengumuman ujian status (Lulus/Tidak Lulus)
+        $statusLulus = $registrant->pengumumanUjian ? $registrant->pengumumanUjian->status : 'Belum Diumumkan';
+
+        // Format Prestasi Akademik
+        $prestasiAkademik = '-';
+        if ($registrant->academicAchievements && $registrant->academicAchievements->count() > 0) {
+            $prestasiList = [];
+            foreach ($registrant->academicAchievements as $achievement) {
+                $prestasiList[] = "Smt {$achievement->semester}: Peringkat {$achievement->peringkat}";
+            }
+            $prestasiAkademik = implode(', ', $prestasiList);
+        }
+
+        // Format Prestasi Non-Akademik
+        $prestasiNonAkademik = '-';
+        if ($registrant->nonAcademicAchievements && $registrant->nonAcademicAchievements->count() > 0) {
+            $tingkatLabels = [
+                'sekolah' => 'Sekolah',
+                'kecamatan' => 'Kecamatan',
+                'kabupaten' => 'Kab/Kota',
+                'provinsi' => 'Provinsi',
+                'nasional' => 'Nasional',
+                'internasional' => 'Internasional',
+            ];
+            $peringkatLabels = [
+                'juara_1' => 'Juara 1',
+                'juara_2' => 'Juara 2',
+                'juara_3' => 'Juara 3',
+                'harapan_1' => 'Harapan 1',
+                'harapan_2' => 'Harapan 2',
+                'harapan_3' => 'Harapan 3',
+                'peserta' => 'Peserta',
+            ];
+            
+            $lombaList = [];
+            foreach ($registrant->nonAcademicAchievements as $achievement) {
+                $tingkat = $tingkatLabels[$achievement->tingkat] ?? $achievement->tingkat;
+                $peringkat = $peringkatLabels[$achievement->peringkat] ?? $achievement->peringkat;
+                $lombaList[] = "{$achievement->nama_lomba} ({$tingkat}, {$peringkat}, {$achievement->tahun})";
+            }
+            $prestasiNonAkademik = implode('; ', $lombaList);
+        }
+
         return [
             $registrant->registration_number,
+            $registrant->created_at->format('d-m-Y'),
+            $registrant->major->name ?? '-',
+            $registrationPath,
             $registrant->name,
-            $registrant->major->name,
-            $registrant->gender->label(),
+            $registrant->nisn,
+            $registrant->nik,
+            $registrant->birth_place ?? '-',
+            $registrant->birth_date ? $registrant->birth_date->format('d-m-Y') : '-',
+            $genderLabel,
+            $religionLabel,
+            $registrant->address->street_address ?? '-',
+            $registrant->address->rt ?? '-',
+            $registrant->address->rw ?? '-',
+            $registrant->address->postal_code ?? '-',
+            $registrant->address->village ?? '-',
+            $registrant->address->district ?? '-',
+            $registrant->address->city ?? '-',
+            $registrant->address->province ?? '-',
+            $registrant->phone ?? '-',
+            $registrant->email ?? '-',
             $registrant->academic->school_name ?? '-',
-            $registrant->phone ?? $registrant->phone ?? '-',
-            $registrant->status->label(),
-            $registrant->created_at->format('d-m-Y H:i'),
+            $registrant->academic->graduation_year ?? '-',
+            $prestasiAkademik,
+            $prestasiNonAkademik,
+            $statusLulus,
         ];
     }
 

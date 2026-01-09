@@ -34,6 +34,16 @@ class SettingSeeder extends Seeder
                 'value' => 'smkalghifari@gmail.com',
                 'type' => 'string'
             ],
+            [
+                'key' => 'school_whatsapp',
+                'value' => '6288860099660',
+                'type' => 'string'
+            ],
+            [
+                'key' => 'linktree_url',
+                'value' => 'https://linktr.ee/officialsmkalghifaribanyuresmi',
+                'type' => 'string'
+            ],
 
             // Registration Config
             [
@@ -78,6 +88,30 @@ class SettingSeeder extends Seeder
             ],
             [
                 'key' => 'committee_head_nip',
+                'value' => '',
+                'type' => 'string'
+            ],
+
+            // Exam Links
+            [
+                'key' => 'exam_link_1',
+                'value' => '',
+                'type' => 'string'
+            ],
+            [
+                'key' => 'exam_link_2',
+                'value' => '',
+                'type' => 'string'
+            ],
+
+            // TTD dan Cap Digital
+            [
+                'key' => 'ttd_panitia',
+                'value' => '',
+                'type' => 'string'
+            ],
+            [
+                'key' => 'cap_sekolah',
                 'value' => '',
                 'type' => 'string'
             ],

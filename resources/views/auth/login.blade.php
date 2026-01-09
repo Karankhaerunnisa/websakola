@@ -16,7 +16,7 @@
             <img src="{{ asset('images/' . $logo) }}" alt="Logo" class="h-20 w-auto object-contain drop-shadow-sm">
         </div>
         <h1 class="text-2xl font-bold text-gray-900">{{ $schoolName }}</h1>
-        <p class="text-sm text-gray-500">Sistem Penerimaan Murid Baru (SPMB)</p>
+        
     </div>
 
     <div class="w-full sm:max-w-md bg-white shadow-md rounded-lg overflow-hidden border border-gray-100">
@@ -73,11 +73,7 @@
             </form>
         </div>
 
-        <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 text-center">
-            <p class="text-xs text-gray-500">
-                &copy; {{ date('Y') }} {{ $schoolName }}. All rights reserved.
-            </p>
-        </div>
+       
     </div>
 
     <div class="mt-6">

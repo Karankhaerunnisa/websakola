@@ -3,9 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Announcement;
+use App\Models\Alumni;
+use App\Models\Ekskul;
 use App\Models\ExamResult;
+use App\Models\Kegiatan;
 use App\Models\Major;
+use App\Models\MitraSmk;
 use App\Models\Pengumumanujian;
+use App\Models\Prestasi;
 use App\Models\Registrant;
 use App\Models\Setting;
 use Illuminate\Http\Request;
@@ -28,8 +33,11 @@ class HomeController extends Controller
     {
         $isOpen = (bool) Setting::getValue('is_registration_open', false);
         $majors = Major::withCount('registrants')->get();
+        
+        // Get active announcements for registration schedule info
+        $announcements = Announcement::active()->latest()->get();
 
-        return view('formulir', compact('isOpen', 'majors'));
+        return view('formulir', compact('isOpen', 'majors', 'announcements'));
     }
 
     public function showAnnouncement(Announcement $announcement)
@@ -158,6 +166,123 @@ class HomeController extends Controller
         $examResult->save();
 
         return back()->with('success', 'Hasil ujian berhasil diupload! Anda dapat melihat hasilnya di halaman Pengumuman Seleksi.');
+    }
+
+    /**
+     * API: Check registrant by registration number
+     * Returns registrant data if found
+     */
+    public function checkRegistrant(Request $request)
+    {
+        $request->validate([
+            'registration_number' => 'required|string',
+        ]);
+
+        $registrant = Registrant::where('registration_number', $request->registration_number)->first();
+
+        if (!$registrant) {
+            return response()->json([
+                'found' => false,
+                'message' => 'Nomor pendaftaran tidak ditemukan.',
+            ]);
+        }
+
+        // Check if already uploaded
+        $examResult = ExamResult::where('registrant_id', $registrant->id)->first();
+        $alreadyUploaded = $examResult && $examResult->exam1_image && $examResult->exam2_image;
+
+        return response()->json([
+            'found' => true,
+            'data' => [
+                'name' => $registrant->name,
+                'nisn' => $registrant->nisn,
+                'major' => $registrant->major->name ?? '-',
+                'already_uploaded' => $alreadyUploaded,
+            ],
+        ]);
+    }
+
+    // Public Pages
+    public function alumni()
+    {
+        $alumni = Alumni::where('is_active', true)->latest()->get();
+        return view('alumni', compact('alumni'));
+    }
+
+    public function prestasi()
+    {
+        $prestasi = Prestasi::where('is_active', true)->latest()->get();
+        $categories = Prestasi::categories();
+        $levels = Prestasi::levels();
+        return view('prestasi', compact('prestasi', 'categories', 'levels'));
+    }
+
+    public function ekskul()
+    {
+        $ekskul = Ekskul::where('is_active', true)->latest()->get();
+        $categories = Ekskul::categories();
+        return view('ekskul', compact('ekskul', 'categories'));
+    }
+
+    public function kegiatan()
+    {
+        $kegiatan = Kegiatan::where('is_active', true)->latest()->get();
+        $categories = Kegiatan::categories();
+        return view('kegiatan', compact('kegiatan', 'categories'));
+    }
+
+    public function mitra()
+    {
+        $mitra = MitraSmk::where('is_active', true)->latest()->get();
+        $categories = MitraSmk::categories();
+        $partnershipTypes = MitraSmk::partnershipTypes();
+        return view('mitra', compact('mitra', 'categories', 'partnershipTypes'));
+    }
+
+    // Tentang Kami Page
+    public function tentangKami()
+    {
+        return view('tentang-kami');
+    }
+
+    // Bursa Kerja Khusus (BKK) Page
+    public function bursaKerja()
+    {
+        return view('bursa-kerja');
+    }
+
+    // Detail Jurusan Page
+    public function showJurusan(Major $major)
+    {
+        $major->loadCount('registrants');
+        $otherMajors = Major::where('id', '!=', $major->id)
+            ->where('is_active', true)
+            ->get();
+        
+        return view('jurusan-detail', compact('major', 'otherMajors'));
+    }
+
+    /**
+     * Cetak Surat Kelulusan Publik
+     */
+    public function cetakKelulusan(Pengumumanujian $pengumuman)
+    {
+        $registrant = $pengumuman->registrant()->with(['major', 'academic', 'guardians', 'address'])->first();
+        
+        if (!$registrant) {
+            abort(404, 'Data pendaftar tidak ditemukan');
+        }
+
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('admin.pengumumanujian.print-kelulusan', [
+            'pengumuman' => $pengumuman,
+            'registrant' => $registrant
+        ]);
+
+        $pdf->setPaper('A4', 'portrait');
+
+        $filename = 'Surat-Kelulusan-' . $registrant->registration_number . '.pdf';
+
+        return $pdf->stream($filename);
     }
 }
 

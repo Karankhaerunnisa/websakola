@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Pengumumanujian;
 use App\Models\Registrant;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 
 class PengumumanujianController extends Controller
@@ -96,6 +97,29 @@ class PengumumanujianController extends Controller
         $pengumuman_ujian->update($validated);
 
         return redirect()->route('admin.pengumuman-ujian.index')->with('success', 'Pengumuman ujian berhasil diperbarui.');
+    }
+
+    /**
+     * Print PDF Surat Kelulusan
+     */
+    public function print(Pengumumanujian $pengumuman_ujian)
+    {
+        $registrant = $pengumuman_ujian->registrant()->with(['major', 'academic', 'guardians', 'address'])->first();
+        
+        if (!$registrant) {
+            return redirect()->back()->with('error', 'Data pendaftar tidak ditemukan.');
+        }
+
+        $pdf = Pdf::loadView('admin.pengumumanujian.print-kelulusan', [
+            'pengumuman' => $pengumuman_ujian,
+            'registrant' => $registrant,
+        ]);
+
+        $pdf->setPaper('A4', 'portrait');
+
+        $filename = 'Surat-Kelulusan-' . $registrant->registration_number . '.pdf';
+        
+        return $pdf->stream($filename);
     }
 
     /**

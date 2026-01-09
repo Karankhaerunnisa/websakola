@@ -46,7 +46,7 @@
         <form method="GET" action="{{ route('admin.registrants.index') }}">
             <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
 
-                <div class="md:col-span-3">
+                <div class="md:col-span-2">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
                     <select name="status"
                         class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
@@ -59,7 +59,7 @@
                     </select>
                 </div>
 
-                <div class="md:col-span-4">
+                <div class="md:col-span-3">
                     <label class="block text-sm font-medium text-gray-700 mb-1">Jurusan</label>
                     <select name="majorCode"
                         class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
@@ -72,17 +72,24 @@
                     </select>
                 </div>
 
-                <div class="md:col-span-5 flex gap-2">
-                    <div class="flex-1">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Cari</label>
-                        <input type="text" name="search" value="{{ request('search') }}"
-                            placeholder="Nama atau No. Pendaftaran"
-                            class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
-                    </div>
+                <div class="md:col-span-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Cari Nama/No.Daftar/NISN</label>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        placeholder="Nama / No. Pendaftaran / NISN"
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                </div>
+
+                <div class="md:col-span-3">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Cari Asal Sekolah</label>
+                    <input type="text" name="schoolSearch" value="{{ request('schoolSearch') }}"
+                        placeholder="Nama Sekolah..."
+                        class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-sm">
+                </div>
+
+                <div class="md:col-span-1">
                     <button type="submit"
-                        class="bg-blue-600 text-white px-5 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm font-medium self-end h-[38px] flex items-center">
-                        <x-heroicon-o-magnifying-glass class="w-4 h-4 mr-2" />
-                        Filter
+                        class="w-full bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors text-sm font-medium h-[38px] flex items-center justify-center">
+                        <x-heroicon-o-magnifying-glass class="w-4 h-4" />
                     </button>
                 </div>
 
@@ -115,7 +122,9 @@
                         <th class="p-4 text-xs font-semibold uppercase tracking-wider">No. Pendaftaran</th>
                         <th class="p-4 text-xs font-semibold uppercase tracking-wider">Nama</th>
                         <th class="p-4 text-xs font-semibold uppercase tracking-wider">Jurusan</th>
+                        <th class="p-4 text-xs font-semibold uppercase tracking-wider">Asal Sekolah</th>
                         <th class="p-4 text-xs font-semibold uppercase tracking-wider">Kontak</th>
+                        <th class="p-4 text-xs font-semibold uppercase tracking-wider">Jalur Pendaftar</th>
                         <th class="p-4 text-xs font-semibold uppercase tracking-wider">Tanggal Daftar</th>
                         <th class="p-4 text-xs font-semibold uppercase tracking-wider text-center">Status</th>
                         <th class="p-4 text-xs font-semibold uppercase tracking-wider text-center">Aksi</th>
@@ -146,6 +155,10 @@
                             {{ $reg->major->name }}
                         </td>
 
+                        <td class="p-4 text-sm text-gray-600">
+                            {{ $reg->academic->school_name}}
+                        </td>
+
                         <td class="p-4 text-sm">
                             <div class="flex items-center text-gray-600 mb-1">
                                 <a href="{{ $reg->whatsapp_url }}" target="_blank"
@@ -159,6 +172,18 @@
                                 <x-heroicon-o-envelope class="w-3 h-3 mr-2" />
                                 {{ $reg->email }}
                             </div>
+                        </td>
+
+                        <td class="p-4 text-sm">
+                            @if($reg->registration_path == 'umum' || $reg->registration_path == '1')
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+                                    Jalur Umum
+                                </span>
+                            @else
+                                <span class="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-700">
+                                    Jalur Prestasi
+                                </span>
+                            @endif
                         </td>
 
                         <td class="p-4 text-sm text-gray-600">
@@ -197,7 +222,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="8" class="p-8 text-center text-gray-500">
+                        <td colspan="10" class="p-8 text-center text-gray-500">
                             <div class="flex flex-col items-center justify-center">
                                 <x-heroicon-o-inbox class="w-12 h-12 text-gray-300 mb-3" />
                                 <p>Tidak ada data pendaftar yang ditemukan.</p>

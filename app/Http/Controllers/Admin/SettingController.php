@@ -41,14 +41,35 @@ class SettingController extends Controller
             );
         }
 
+        if ($request->hasFile('ttd_panitia')) {
+            $this->handleFileUpload(
+                $request->file('ttd_panitia'),
+                'ttd_panitia',
+                'ttd-panitia'
+            );
+        }
+
+        if ($request->hasFile('ttd_kepala_sekolah')) {
+            $this->handleFileUpload(
+                $request->file('ttd_kepala_sekolah'),
+                'ttd_kepala_sekolah',
+                'ttd-kepala-sekolah'
+            );
+        }
+
         // Remove handled attributes from array
         unset($validated['app_logo']);
         unset($validated['document_header']);
+        unset($validated['ttd_panitia']);
+        unset($validated['ttd_kepala_sekolah']);
 
         // FIX 4: Loop through validated data directly
         foreach ($validated as $key => $value) {
-            // We update blindly because $validated only contains valid rules from your Request
-            Setting::where('key', $key)->update(['value' => $value]);
+            // We use updateOrCreate to handle both existing and new settings
+            Setting::updateOrCreate(
+                ['key' => $key],
+                ['value' => $value, 'type' => 'string']
+            );
         }
 
         return back()->with('success', 'Pengaturan berhasil disimpan.');

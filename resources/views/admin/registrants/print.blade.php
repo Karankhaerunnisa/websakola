@@ -235,10 +235,16 @@
             <td class="value">{{ $registrant->academic->school_name ?? '-' }}</td>
         </tr>
         <tr>
-            <td class="label">Jurusan yang Dipilih</td>
+            <td class="label">Jurusan 1 yang Dipilih</td>
             <td class="separator">:</td>
             <td class="value">{{ $registrant->major->name }}</td>
         </tr>
+        <tr>
+            <td class="label">Jurusan 2 yang Dipilih</td>
+            <td class="separator">:</td>
+            <td class="value">{{ $registrant->major2?->name ?? '-' }}</td>
+        </tr>
+
         <tr>
             <td class="label">Jalur Pendaftaran</td>
             <td class="separator">:</td>
@@ -264,24 +270,38 @@
                 <td class="signature-box">
                     <br>
                     Calon Peserta Didik,
-                    <br><br><br><br>
-                    <b>{{ $registrant->name }}</b>
+                    <br><br><br><br><br>
+                    <b>{{ $registrant->name }}</b><br>
+                    <!--NISN. {{ $registrant->nisn }}  --> 
+
                 </td>
                 <td class="signature-box">
                     Garut, {{ now()->translatedFormat('d F Y') }}<br>
                     Ketua Panitia SPMB,
+                    <br>
+                    @if($ttdPanitia = \App\Models\Setting::getValue('ttd_panitia'))
+                    <img src="{{ public_path('images/' . $ttdPanitia) }}" style="height: 100px; width: auto; margin: 5px 0;">
+                    @else
                     <br><br><br><br>
+                    @endif
+                    <br>
                     <b>{{ \App\Models\Setting::getValue('committee_head_name') }}</b><br>
                     NUPTK. {{ \App\Models\Setting::getValue('committee_head_nip') }}
                 </td>
             </tr>
         </table>
     </div>
-
     <div class="footer">
         <ol>
-            <li>Simpan bukti pendaftaran ini dengan baik.</li>
+            
             <li>Bukti ini merupakan tanda bahwa pendaftaran Anda telah tercatat dalam SPMB.</li>
+            <li>Cetak bukti pendaftaran untuk tes wawancara yang diumumkan dilaman beranda Informasi/Berita</li>
+            
+            <li>Keterangan</li>
+            <p>Status pending : Dalam proses pengecekan Data Siswa</p>
+            <p>Status Terverifikasi : Pengecekan Berkas Persyaratan dan Tes Minat Bakat</p>
+            <p>Status Disetujui : Lulus Administrasi & Tes</p>
+            <p>Status Ditolak : Kesalahan Mengisi Formulir dan diharuskan mengisi kembali</p>
         </ol>
     </div>
 

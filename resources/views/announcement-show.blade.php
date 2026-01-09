@@ -10,28 +10,7 @@
 
 <body class="bg-gray-50 font-sans antialiased min-h-screen flex flex-col">
 
-    <nav class="bg-white shadow-sm sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16 items-center">
-                <div class="flex items-center gap-3">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2">
-                        <img src="{{ asset('images/' . \App\Models\Setting::getValue('app_logo', 'default.png')) }}"
-                            class="h-8 w-auto">
-                        <div class="font-bold text-blue-900 text-lg hidden sm:block">{{
-                            \App\Models\Setting::getValue('school_name') }}</div>
-                    </a>
-                </div>
-                <div>
-                    <a href="{{ route('home') }}"
-                        class="text-sm font-medium text-gray-600 hover:text-blue-600 flex items-center">
-                        <x-heroicon-o-arrow-left class="w-4 h-4 mr-1" />
-                        Kembali
-                    </a>
-                </div>
-            </div>
-        </div>
-    </nav>
-
+    
     <main class="flex-grow max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 w-full">
 
         <article class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">

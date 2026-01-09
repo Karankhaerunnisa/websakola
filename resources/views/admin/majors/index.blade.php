@@ -99,8 +99,12 @@
                             </div>
                         </td>
                         <td class="p-4 flex justify-center gap-2">
+                            <a href="{{ route('admin.majors.edit-content', $major->code) }}"
+                                    class="p-2 bg-green-50 text-green-600 rounded-full hover:bg-green-100 transition" title="Edit Konten">
+                                <x-heroicon-o-document-text class="w-4 h-4" />
+                            </a>
                             <button @click="openEdit({{ $major }})"
-                                    class="p-2 bg-yellow-50 text-yellow-600 rounded-full hover:bg-yellow-100 transition">
+                                    class="p-2 bg-yellow-50 text-yellow-600 rounded-full hover:bg-yellow-100 transition" title="Edit Info">
                                 <x-heroicon-o-pencil-square class="w-4 h-4" />
                             </button>
 
@@ -108,7 +112,7 @@
                                   onsubmit="return confirm('Hapus jurusan {{ $major->code }}?');">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="p-2 bg-red-50 text-red-600 rounded-full hover:bg-red-100 transition">
+                                <button type="submit" class="p-2 bg-red-50 text-red-600 rounded-full hover:bg-red-100 transition" title="Hapus">
                                     <x-heroicon-o-trash class="w-4 h-4" />
                                 </button>
                             </form>

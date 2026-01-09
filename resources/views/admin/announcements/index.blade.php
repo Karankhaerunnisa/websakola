@@ -1,6 +1,6 @@
 @extends('layouts.admin')
 
-@section('title', 'Kelola Pengumuman')
+@section('title', 'Kelola Informasi')
 
 @section('content')
 
@@ -18,7 +18,7 @@
         this.isEdit = false;
         this.formAction = '{{ route('admin.announcements.store') }}';
         this.formMethod = 'POST';
-        this.modalTitle = 'Buat Pengumuman Baru';
+        this.modalTitle = 'Buat Informasi atau Berita Baru';
         // Set default date to Today
         const today = new Date().toISOString().slice(0, 16);
         this.data = { id: '', title: '', content: '', published_at: today, expired_at: '', is_active: true };
@@ -29,7 +29,7 @@
         this.isEdit = true;
         this.formAction = '{{ url('admin/announcements') }}/' + item.id;
         this.formMethod = 'PUT';
-        this.modalTitle = 'Edit Pengumuman';
+        this.modalTitle = 'Edit Informasi';
 
         // Format dates for HTML datetime-local input (YYYY-MM-DDTHH:MM)
         let pub = item.published_at ? item.published_at.slice(0, 16) : '';
@@ -41,11 +41,11 @@
 }">
 
     <div class="flex justify-between items-center mb-6">
-        <h2 class="text-lg font-medium text-gray-900">Daftar Pengumuman</h2>
+        <h2 class="text-lg font-medium text-gray-900">Daftar Informasi</h2>
         <button @click="openCreate()"
             class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition text-sm font-medium flex items-center shadow-sm">
             <x-heroicon-o-plus class="w-4 h-4 mr-2" />
-            Buat Pengumuman
+            Buat Informasi
         </button>
     </div>
 
@@ -96,7 +96,7 @@
                                 <x-heroicon-o-pencil-square class="w-4 h-4" />
                             </button>
                             <form action="{{ route('admin.announcements.destroy', $item->id) }}" method="POST"
-                                onsubmit="return confirm('Hapus pengumuman ini?');">
+                                onsubmit="return confirm('Hapus informasi ini?');">
                                 @csrf @method('DELETE')
                                 <button type="submit"
                                     class="p-2 bg-red-50 text-red-600 rounded-full hover:bg-red-100 transition">
@@ -107,7 +107,7 @@
                     </tr>
                     @empty
                     <tr>
-                        <td colspan="4" class="p-8 text-center text-gray-500">Belum ada pengumuman.</td>
+                        <td colspan="4" class="p-8 text-center text-gray-500">Belum ada informasi.</td>
                     </tr>
                     @endforelse
                 </tbody>
@@ -132,7 +132,7 @@
                     <input type="hidden" name="_method" :value="isEdit ? 'PUT' : 'POST'">
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Judul Pengumuman</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Judul Informasi</label>
                         <input type="text" name="title" x-model="data.title" required
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 text-sm">
                     </div>
@@ -153,7 +153,7 @@
                     </div>
 
                     <div class="mb-4">
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Isi Pengumuman</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Isi Informasi</label>
                         <textarea name="content" x-model="data.content" rows="6" required
                             class="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 text-sm"></textarea>
                     </div>

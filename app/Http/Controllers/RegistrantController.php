@@ -25,7 +25,7 @@ class RegistrantController extends Controller
 
         $statuses = RegistrantStatus::cases();
 
-        $registrants = Registrant::with('major')
+        $registrants = Registrant::with(['major', 'academic'])
 
             ->when($request->majorCode, function ($query, $majorCode) {
                 $query->whereRelation('major', 'code', $majorCode);
@@ -38,7 +38,14 @@ class RegistrantController extends Controller
             ->when($request->search, function ($query, $search) {
                 $query->where(function ($q) use ($search) {
                     $q->where('name', 'like', "%{$search}%")
-                        ->orWhere('registration_number', 'like', "%{$search}%");
+                        ->orWhere('registration_number', 'like', "%{$search}%")
+                        ->orWhere('nisn', 'like', "%{$search}%");
+                });
+            })
+
+            ->when($request->schoolSearch, function ($query, $schoolSearch) {
+                $query->whereHas('academic', function ($q) use ($schoolSearch) {
+                    $q->where('school_name', 'like', "%{$schoolSearch}%");
                 });
             })
             ->paginate(10);
@@ -65,11 +72,13 @@ class RegistrantController extends Controller
     /**
      * Display the specified resource.
      */
+    
     public function show(Registrant $registrant)
     {
-        $registrant->load(['major', 'address', 'guardians', 'academic', 'documents', 'examResult']);
+        $registrant->load(['major', 'address', 'guardians', 'academic', 'documents', 'examResult', 'academicAchievements', 'nonAcademicAchievements']);
+        $majors = Major::all();
 
-        return view('admin.registrants.partials.detail-modal', compact('registrant'));
+        return view('admin.registrants.partials.detail-modal', compact('registrant', 'majors'));
     }
 
     /**

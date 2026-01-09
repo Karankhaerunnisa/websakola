@@ -66,10 +66,10 @@
                         Cetak Bukti Daftar
                     </a>
 
-                    <a href="{{ route('home') }}"
+                    <a href="{{ route('registration.check-status.form') }}"
                         class="flex items-center justify-center w-full bg-white border border-gray-300 text-gray-700 font-bold py-3 rounded-lg hover:bg-gray-50 transition">
-                        <x-heroicon-o-home class="w-5 h-5 mr-2" />
-                        Kembali ke Beranda
+                        <x-heroicon-o-clipboard-document-check class="w-5 h-5 mr-2" />
+                        Cek Status
                     </a>
                 </div>
 

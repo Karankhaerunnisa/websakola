@@ -130,6 +130,12 @@
                         </td>
 
                         <td class="p-4 flex justify-center gap-2">
+                            <a href="{{ route('admin.pengumuman-ujian.print', $item->id) }}"
+                                target="_blank"
+                                class="p-2 bg-green-50 text-green-600 rounded-full hover:bg-green-100 transition"
+                                title="Cetak Surat Kelulusan">
+                                <x-heroicon-o-printer class="w-4 h-4" />
+                            </a>
                             <button @click="openEdit({
                                 id: {{ $item->id }},
                                 registrant_id: {{ $item->registrant_id }},
